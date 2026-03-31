@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Atollom AI — Inteligencia Artificial que transforma tu operación. Conectamos IA con tus sistemas de gestión para automatizar análisis y multiplicar resultados financieros.">
+  <meta name="keywords" content="inteligencia artificial, IA empresarial, ERP, automatización, análisis de datos, SaaS, Atollom AI">
+  <meta name="author" content="Atollom AI">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Atollom AI — Inteligencia de Datos en Tiempo Real">
+  <meta property="og:description" content="Conectamos IA con tus sistemas de gestión para automatizar análisis, optimizar decisiones y multiplicar resultados.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://atollom.com">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <title>Atollom AI — Inteligencia de Datos en Tiempo Real</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='%23CCFF00' stroke-width='6' fill='none'%3E%3Cellipse cx='50' cy='50' rx='42' ry='18' transform='rotate(0 50 50)'/%3E%3Cellipse cx='50' cy='50' rx='42' ry='18' transform='rotate(60 50 50)'/%3E%3Cellipse cx='50' cy='50' rx='42' ry='18' transform='rotate(120 50 50)'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="#hero" class="nav-logo">
+      <img src="Atollom WEB media/Atollom  Logo.png" alt="Atollom AI" class="nav-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span class="nav-logo-fallback" style="display:none;align-items:center;gap:10px"><svg viewBox="0 0 100 100" width="36" height="36"><g stroke="#CCFF00" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="50" cy="50" rx="40" ry="16"/><ellipse cx="50" cy="50" rx="40" ry="16" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="40" ry="16" transform="rotate(120 50 50)"/></g></svg><span class="nav-logo-text"><span class="atollom">ATOLLOM</span> <span class="ai">AI</span></span></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero" data-i18n="nav.home">Inicio</a>
+      <a href="#showcase" data-i18n="nav.solutions">Soluciones</a>
+      <a href="#sandbox" data-i18n="nav.demo">Demo</a>
+      <a href="#architecture" data-i18n="nav.arch">Arquitectura</a>
+      <a href="#contact" data-i18n="nav.contact">Contacto</a>
+    </div>
+    <div class="nav-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="Cambiar idioma">
+        <span class="active-lang">ES</span> | <span>EN</span>
+      </button>
+      <a href="#contact" class="btn btn-primary btn-sm" data-i18n="nav.cta">Agenda una Demo</a>
+    </div>
+    <div class="nav-hamburger" id="navHamburger" aria-label="Menú"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-gradient"></div>
+  <div class="container">
+    <div class="hero-split">
+      <div class="hero-text">
+        <div class="hero-badge"><span class="pulse-dot"></span> <span data-i18n="hero.badge">Plataforma de IA Empresarial</span></div>
+        <h1 class="hero-h1"><span data-i18n="hero.h1a">Inteligencia Artificial que </span><br><span class="text-gradient" data-i18n="hero.h1b">Transforma tu Operación</span></h1>
+        <p class="hero-h2" data-i18n="hero.h2">Conectamos IA con tus sistemas de gestión para automatizar análisis, optimizar decisiones y multiplicar resultados financieros.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary btn-lg" data-i18n="hero.cta1">Agenda una Demo</a>
+          <a href="#about" class="btn btn-outline btn-lg" data-i18n="hero.cta2">Conoce Más</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><span class="hero-stat-value" data-counter="600">0</span><span class="hero-stat-label" data-i18n="hero.stat1">Tenants Activos</span></div>
+          <div class="hero-stat"><span class="hero-stat-value" data-counter="99.9" data-suffix="%">0</span><span class="hero-stat-label" data-i18n="hero.stat2">Uptime</span></div>
+          <div class="hero-stat"><span class="hero-stat-value" data-counter="4500" data-prefix="">0</span><span class="hero-stat-label" data-i18n="hero.stat3">API Requests / día</span></div>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="hero-video-wrapper">
+          <video autoplay muted loop playsinline preload="metadata">
+            <source src="Atollom WEB media/video hero atollom.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section id="showcase">
+  <div class="container">
+    <div class="text-center reveal">
+      <span class="section-label" data-i18n="showcase.label">Potencia Ejecutiva</span>
+      <h2 class="section-title" data-i18n="showcase.title">Todo el Poder en una Pantalla</h2>
+      <p class="section-subtitle mx-auto" data-i18n="showcase.subtitle">Dashboards inteligentes que transforman datos complejos en decisiones claras e inmediatas.</p>
+    </div>
+    <div class="showcase-grid mt-lg reveal-scale">
+      <div class="showcase-image-wrapper">
+        <img src="Atollom WEB media/dashboard.png" alt="Atollom AI Dashboard" loading="lazy" width="1400" height="700">
+      </div>
+    </div>
+    <div class="showcase-features stagger-children mt-lg">
+      <div class="feature-card">
+        <div class="feature-icon"><span>📊</span></div>
+        <h3 data-i18n="showcase.f1.title">Análisis Multi-Tenant</h3>
+        <p class="text-secondary" data-i18n="showcase.f1.desc">Gestiona múltiples empresas desde un solo panel con segregación segura de datos.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><span>⚡</span></div>
+        <h3 data-i18n="showcase.f2.title">Reportes en Tiempo Real</h3>
+        <p class="text-secondary" data-i18n="showcase.f2.desc">Obtén métricas financieras, inventarios y proyecciones al instante mediante chat.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><span>🔗</span></div>
+        <h3 data-i18n="showcase.f3.title">Integración Universal</h3>
+        <p class="text-secondary" data-i18n="showcase.f3.desc">Conexión agnóstica con cualquier sistema de gestión empresarial del mercado.</p>
+      </div>
+    </div>
+    <div class="showcase-mobile mt-lg">
+      <div class="reveal-left">
+        <span class="section-label" data-i18n="showcase.mobile.label">Experiencia Móvil</span>
+        <h2 class="section-title" data-i18n="showcase.mobile.title">Tu Negocio en la Palma de tu Mano</h2>
+        <p class="text-secondary" data-i18n="showcase.mobile.desc">Accede a reportes, análisis y visualizaciones desde cualquier dispositivo. La inteligencia de Atollom te acompaña donde vayas.</p>
+        <a href="#contact" class="btn btn-outline mt-md" data-i18n="showcase.mobile.cta">Solicitar Acceso</a>
+      </div>
+      <div class="showcase-mobile-image reveal-right">
+        <img src="Atollom WEB media/Atollom escale.png" alt="Atollom AI Mobile" loading="lazy" width="400" height="700">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-header reveal">
+      <span class="section-label" data-i18n="about.label">¿Qué es Atollom AI?</span>
+      <h2 class="section-title" data-i18n="about.title">El Puente entre tus Datos y tus Decisiones</h2>
+      <p class="section-subtitle mx-auto" data-i18n="about.subtitle">Transformamos bases de datos complejas y estructuras de gestión empresarial en conversaciones fluidas y comprensibles mediante IA generativa.</p>
+    </div>
+    <div class="about-pillars stagger-children">
+      <div class="pillar-card glass-card">
+        <div class="pillar-icon"><span>📋</span></div>
+        <h3 data-i18n="about.p1.title">Reportes Financieros Instantáneos</h3>
+        <p data-i18n="about.p1.desc">Estados financieros, balances y análisis de rentabilidad en segundos a través de una interfaz de chat intuitiva.</p>
+      </div>
+      <div class="pillar-card glass-card">
+        <div class="pillar-icon"><span>📦</span></div>
+        <h3 data-i18n="about.p2.title">Análisis de Inventarios</h3>
+        <p data-i18n="about.p2.desc">Control inteligente de stock, alertas de reabastecimiento y optimización de cadena de suministro en tiempo real.</p>
+      </div>
+      <div class="pillar-card glass-card">
+        <div class="pillar-icon"><span>📈</span></div>
+        <h3 data-i18n="about.p3.title">Proyecciones de Ventas</h3>
+        <p data-i18n="about.p3.desc">Modelos predictivos que anticipan tendencias de mercado y oportunidades de crecimiento con precisión.</p>
+      </div>
+    </div>
+    <div class="about-tagline reveal">
+      <span class="text-gradient" data-i18n="about.tagline">Habla con tus datos. Sin procesos lentos. Sin intermediarios.</span>
+    </div>
+    <div class="about-sectors reveal">
+      <h3 data-i18n="about.sectors.title">Sectores que Transformamos</h3>
+      <div class="sector-tags">
+        <span class="sector-tag"><span>🏢</span> <span data-i18n="about.s1">Usuarios de ERPs</span></span>
+        <span class="sector-tag"><span>🏥</span> <span data-i18n="about.s2">Sector Médico</span></span>
+        <span class="sector-tag"><span>🛥️</span> <span data-i18n="about.s3">Turismo de Lujo</span></span>
+        <span class="sector-tag"><span>🛍️</span> <span data-i18n="about.s4">Retail & Moda</span></span>
+        <span class="sector-tag"><span>🍽️</span> <span data-i18n="about.s5">Restaurantes</span></span>
+        <span class="sector-tag"><span>🛒</span> <span data-i18n="about.s6">E-commerce</span></span>
+        <span class="sector-tag highlight"><span>✨</span> <span data-i18n="about.s7">Y cualquier industria</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SANDBOX -->
+<section id="sandbox">
+  <div class="container">
+    <div class="sandbox-header reveal">
+      <span class="section-label" data-i18n="sandbox.label">Demo Interactiva</span>
+      <h2 class="section-title" data-i18n="sandbox.title">Experimenta el Poder de Atollom AI</h2>
+      <p class="section-subtitle mx-auto" data-i18n="sandbox.subtitle">Selecciona una industria y descubre cómo nuestra IA transforma datos en decisiones estratégicas.</p>
+    </div>
+    <div class="sandbox-tabs reveal" id="sandboxTabs">
+      <button class="sandbox-tab active" data-tab="clinica"><span>🏥</span> <span data-i18n="sandbox.t1">Clínica Médica</span></button>
+      <button class="sandbox-tab" data-tab="retail"><span>🛍️</span> <span data-i18n="sandbox.t2">Retail / Moda</span></button>
+      <button class="sandbox-tab" data-tab="restaurante"><span>🍽️</span> <span data-i18n="sandbox.t3">Restaurante</span></button>
+      <button class="sandbox-tab" data-tab="yates"><span>🛥️</span> <span data-i18n="sandbox.t4">Yates de Lujo</span></button>
+      <button class="sandbox-tab" data-tab="ecommerce"><span>🛒</span> <span data-i18n="sandbox.t5">E-commerce</span></button>
+    </div>
+    <div id="sandboxPanels">
+      <!-- Clínica -->
+      <div class="sandbox-panel active" data-panel="clinica">
+        <div class="sandbox-content">
+          <div class="sandbox-metrics">
+            <div class="metric-card"><span class="metric-value">25</span><span class="metric-label" data-i18n="sandbox.c.m1">Cirugías / mes</span></div>
+            <div class="metric-card"><span class="metric-value">50</span><span class="metric-label" data-i18n="sandbox.c.m2">Implantes en stock crítico</span></div>
+            <div class="metric-card"><span class="metric-value">40%</span><span class="metric-label" data-i18n="sandbox.c.m3">Margen de utilidad</span></div>
+            <div class="metric-card"><span class="metric-value text-gradient">Alto</span><span class="metric-label" data-i18n="sandbox.c.m4">Nivel de optimización</span></div>
+          </div>
+          <div class="sandbox-insight">
+            <div class="sandbox-insight-header"><span class="insight-dot"></span><span class="insight-title" data-i18n="sandbox.insight">Análisis Atollom AI</span></div>
+            <div class="sandbox-insight-body" data-i18n="sandbox.c.insight">
+              <strong>Hallazgo clave:</strong> Con 25 cirugías mensuales y 50 implantes en stock crítico, tu rotación de inventario quirúrgico necesita optimización inmediata. El <strong>40% de margen de utilidad</strong> en insumos puede incrementarse un 12% mediante gestión predictiva de compras. Atollom AI automatizaría las alertas de reabastecimiento y proyectaría la demanda de implantes por temporada.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Retail -->
+      <div class="sandbox-panel" data-panel="retail">
+        <div class="sandbox-content">
+          <div class="sandbox-metrics">
+            <div class="metric-card"><span class="metric-value">$1,200</span><span class="metric-label" data-i18n="sandbox.r.m1">Ticket promedio MXN</span></div>
+            <div class="metric-card"><span class="metric-value">30%</span><span class="metric-label" data-i18n="sandbox.r.m2">Tasa de devoluciones</span></div>
+            <div class="metric-card"><span class="metric-value">150</span><span class="metric-label" data-i18n="sandbox.r.m3">Ventas mensuales</span></div>
+            <div class="metric-card"><span class="metric-value text-gradient">Crítico</span><span class="metric-label" data-i18n="sandbox.r.m4">Devoluciones Chaqueta Tech</span></div>
+          </div>
+          <div class="sandbox-insight">
+            <div class="sandbox-insight-header"><span class="insight-dot"></span><span class="insight-title" data-i18n="sandbox.insight">Análisis Atollom AI</span></div>
+            <div class="sandbox-insight-body" data-i18n="sandbox.r.insight">
+              <strong>Alerta:</strong> La tasa de devoluciones del 30% está erosionando tus márgenes. El producto más devuelto es la <strong>Chaqueta Tech</strong>. Con 150 ventas mensuales y ticket promedio de $1,200 MXN, pierdes aproximadamente $54,000 MXN/mes en logística inversa. Atollom AI identificaría patrones de devolución por talla, color y canal para reducir esta tasa un 18%.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Restaurante -->
+      <div class="sandbox-panel" data-panel="restaurante">
+        <div class="sandbox-content">
+          <div class="sandbox-metrics">
+            <div class="metric-card"><span class="metric-value">14-16h</span><span class="metric-label" data-i18n="sandbox.re.m1">Hora pico</span></div>
+            <div class="metric-card"><span class="metric-value">12%</span><span class="metric-label" data-i18n="sandbox.re.m2">Desperdicio de insumos</span></div>
+            <div class="metric-card"><span class="metric-value">60%</span><span class="metric-label" data-i18n="sandbox.re.m3">Margen en bebidas</span></div>
+            <div class="metric-card"><span class="metric-value text-gradient">Óptimo</span><span class="metric-label" data-i18n="sandbox.re.m4">Potencial de mejora</span></div>
+          </div>
+          <div class="sandbox-insight">
+            <div class="sandbox-insight-header"><span class="insight-dot"></span><span class="insight-title" data-i18n="sandbox.insight">Análisis Atollom AI</span></div>
+            <div class="sandbox-insight-body" data-i18n="sandbox.re.insight">
+              <strong>Oportunidad:</strong> Tu hora pico (14:00-16:00) concentra el mayor revenue, pero el <strong>12% de desperdicio</strong> en cocina indica sobreproducción. Las bebidas con <strong>60% de margen</strong> son tu mayor activo. Atollom AI optimizaría la producción por franja horaria y sugeriría estrategias de upselling en bebidas para maximizar el ticket promedio.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Yates -->
+      <div class="sandbox-panel" data-panel="yates">
+        <div class="sandbox-content">
+          <div class="sandbox-metrics">
+            <div class="metric-card"><span class="metric-value">85%</span><span class="metric-label" data-i18n="sandbox.y.m1">Ocupación temporada alta</span></div>
+            <div class="metric-card"><span class="metric-value">20%</span><span class="metric-label" data-i18n="sandbox.y.m2">Ingreso por extras</span></div>
+            <div class="metric-card"><span class="metric-value">Premium</span><span class="metric-label" data-i18n="sandbox.y.m3">Segmento de mercado</span></div>
+            <div class="metric-card"><span class="metric-value text-gradient">Alto</span><span class="metric-label" data-i18n="sandbox.y.m4">Potencial catering</span></div>
+          </div>
+          <div class="sandbox-insight">
+            <div class="sandbox-insight-header"><span class="insight-dot"></span><span class="insight-title" data-i18n="sandbox.insight">Análisis Atollom AI</span></div>
+            <div class="sandbox-insight-body" data-i18n="sandbox.y.insight">
+              <strong>Estrategia:</strong> Con <strong>85% de ocupación</strong> en temporada alta, el potencial de revenue está en los servicios premium. El catering y extras representan el <strong>20% del ingreso total</strong> — esa cifra debería ser 35%. Atollom AI modelaría paquetes personalizados por perfil de cliente y automatizaría la gestión de reservas con upselling inteligente.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- E-commerce -->
+      <div class="sandbox-panel" data-panel="ecommerce">
+        <div class="sandbox-content">
+          <div class="sandbox-metrics">
+            <div class="metric-card"><span class="metric-value">$250</span><span class="metric-label" data-i18n="sandbox.e.m1">CAC (MXN)</span></div>
+            <div class="metric-card"><span class="metric-value">3.5%</span><span class="metric-label" data-i18n="sandbox.e.m2">Tasa de conversión</span></div>
+            <div class="metric-card"><span class="metric-value">2:30</span><span class="metric-label" data-i18n="sandbox.e.m3">Tiempo en sitio (min)</span></div>
+            <div class="metric-card"><span class="metric-value text-gradient">Medio</span><span class="metric-label" data-i18n="sandbox.e.m4">Engagement actual</span></div>
+          </div>
+          <div class="sandbox-insight">
+            <div class="sandbox-insight-header"><span class="insight-dot"></span><span class="insight-title" data-i18n="sandbox.insight">Análisis Atollom AI</span></div>
+            <div class="sandbox-insight-body" data-i18n="sandbox.e.insight">
+              <strong>Diagnóstico:</strong> Un CAC de <strong>$250 MXN</strong> con conversión del <strong>3.5%</strong> indica que tu embudo es funcional pero no eficiente. El tiempo de permanencia de 2:30 min sugiere que los usuarios no encuentran lo que buscan rápido. Atollom AI analizaría los recorridos de usuario, identificaría puntos de fuga y optimizaría la experiencia para elevar la conversión al 5.5%.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sandbox-cta reveal">
+      <p data-i18n="sandbox.cta.text">¿Quieres ver esto con TUS datos reales?</p>
+      <a href="#contact" class="btn btn-primary btn-lg" data-i18n="sandbox.cta.btn">Agenda una Demo Personalizada</a>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="container">
+    <div class="arch-header reveal">
+      <span class="section-label" data-i18n="arch.label">Arquitectura Inteligente</span>
+      <h2 class="section-title" data-i18n="arch.title">Cuatro Agentes. Un Solo Objetivo.</h2>
+      <p class="section-subtitle mx-auto" data-i18n="arch.subtitle">Nuestro sistema no es un simple chat. Es un pipeline robusto de 4 agentes especializados que procesan cada consulta con precisión quirúrgica.</p>
+    </div>
+    <div class="agents-flow stagger-children">
+      <div class="agent-card">
+        <div class="agent-icon"><span>🧭</span></div>
+        <span class="agent-number">1</span>
+        <h3 data-i18n="arch.a1.title">Estrategia</h3>
+        <span class="agent-role">Router</span>
+        <p data-i18n="arch.a1.desc">Identifica la consulta y dirige al área correcta del sistema para su procesamiento óptimo.</p>
+        <span class="agent-arrow">→</span>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon"><span>📊</span></div>
+        <span class="agent-number">2</span>
+        <h3 data-i18n="arch.a2.title">Analista de Datos</h3>
+        <span class="agent-role">Data Engine</span>
+        <p data-i18n="arch.a2.desc">Extrae y procesa números reales de tus sistemas de gestión con precisión absoluta.</p>
+        <span class="agent-arrow">→</span>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon"><span>📈</span></div>
+        <span class="agent-number">3</span>
+        <h3 data-i18n="arch.a3.title">Visualizador</h3>
+        <span class="agent-role">Visual Engine</span>
+        <p data-i18n="arch.a3.desc">Transforma los datos procesados en gráficas y visualizaciones de alto impacto ejecutivo.</p>
+        <span class="agent-arrow">→</span>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon"><span>🛡️</span></div>
+        <span class="agent-number">4</span>
+        <h3 data-i18n="arch.a4.title">Supervisor</h3>
+        <span class="agent-role">Quality Gate</span>
+        <p data-i18n="arch.a4.desc">Valida la precisión y seguridad de cada respuesta antes de entregarla al usuario.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section id="security">
+  <div class="container">
+    <div class="security-header reveal">
+      <span class="section-label" data-i18n="sec.label">Seguridad Empresarial</span>
+      <h2 class="section-title" data-i18n="sec.title">Blindaje de Nivel Bancario</h2>
+      <p class="section-subtitle mx-auto" data-i18n="sec.subtitle">Tu información es sagrada. Implementamos los más altos estándares de seguridad para proteger cada byte de tus datos.</p>
+    </div>
+    <div class="security-grid stagger-children">
+      <div class="security-card glass-card">
+        <div class="security-icon"><span>🔐</span></div>
+        <h3 data-i18n="sec.s1.title">Encriptación End-to-End</h3>
+        <p data-i18n="sec.s1.desc">Toda la comunicación entre tu sistema y Atollom viaja encriptada con protocolos AES-256 y TLS 1.3.</p>
+      </div>
+      <div class="security-card glass-card">
+        <div class="security-icon"><span>🏰</span></div>
+        <h3 data-i18n="sec.s2.title">Zero Trust Architecture</h3>
+        <p data-i18n="sec.s2.desc">Cada solicitud se valida independientemente. Sin confianza implícita. Cada acceso es verificado y auditado.</p>
+      </div>
+      <div class="security-card glass-card">
+        <div class="security-icon"><span>🔌</span></div>
+        <h3 data-i18n="sec.s3.title">ERP Agnóstico</h3>
+        <p data-i18n="sec.s3.desc">Conexión segura con cualquier sistema de gestión empresarial sin exponer credenciales ni datos sensibles.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-header reveal">
+      <span class="section-label" data-i18n="contact.label">Contacto</span>
+      <h2 class="section-title" data-i18n="contact.title">¿Listo para Transformar tu Operación?</h2>
+      <p class="section-subtitle mx-auto" data-i18n="contact.subtitle">Cuéntanos sobre tu negocio y te mostraremos cómo Atollom AI puede optimizar tus resultados.</p>
+    </div>
+    <div class="contact-grid">
+      <form class="contact-form glass-card reveal-left" id="contactForm" action="https://formsubmit.co/ventas@atollom.com" method="POST">
+        <input type="hidden" name="_subject" value="Nuevo Lead desde atollom.com">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_next" value="https://atollom.com#contact">
+        <input type="text" name="_honey" style="display:none">
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="form.name">Nombre completo *</label>
+            <input type="text" name="nombre" required placeholder="Tu nombre" id="formName">
+          </div>
+          <div class="form-group">
+            <label data-i18n="form.company">Empresa *</label>
+            <input type="text" name="empresa" required placeholder="Nombre de tu empresa" id="formCompany">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="form.email">Email *</label>
+            <input type="email" name="email" required placeholder="correo@empresa.com" id="formEmail">
+          </div>
+          <div class="form-group">
+            <label data-i18n="form.phone">Teléfono</label>
+            <input type="tel" name="telefono" placeholder="+52 55 1234 5678" id="formPhone">
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="form.message">¿Cómo podemos ayudarte?</label>
+          <textarea name="mensaje" rows="4" placeholder="Cuéntanos sobre tu negocio y qué tipo de integración necesitas..." id="formMessage"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg" data-i18n="form.submit">Enviar Mensaje</button>
+      </form>
+      <div class="contact-info reveal-right">
+        <div class="contact-info-card">
+          <h3><span>💬</span> <span data-i18n="contact.direct">Contacto Directo</span></h3>
+          <a href="mailto:contacto@atollom.com" class="contact-method"><span>📧</span> contacto@atollom.com</a>
+          <a href="mailto:ventas@atollom.com" class="contact-method"><span>📧</span> ventas@atollom.com</a>
+          <a href="https://wa.me/525530520825?text=Hola,%20me%20interesa%20conocer%20más%20sobre%20Atollom%20AI" target="_blank" rel="noopener" class="contact-method"><span>📱</span> +52 55 3052 0825</a>
+        </div>
+        <a href="https://wa.me/525530520825?text=Hola,%20me%20interesa%20agendar%20una%20demo%20de%20Atollom%20AI" target="_blank" rel="noopener" class="whatsapp-cta">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span data-i18n="contact.wa.cta">Escríbenos por WhatsApp</span>
+        </a>
+        <div class="contact-info-card">
+          <h3><span>⏰</span> <span data-i18n="contact.response">Tiempo de Respuesta</span></h3>
+          <p class="text-secondary" data-i18n="contact.response.desc">Respondemos en menos de 2 horas en horario laboral. Para consultas urgentes, usa el chat o WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="Atollom WEB media/Atollom  Logo.png" alt="Atollom AI" class="footer-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="nav-logo-fallback" style="display:none;align-items:center;gap:10px"><svg viewBox="0 0 100 100" width="32" height="32"><g stroke="#CCFF00" stroke-width="7" fill="none" stroke-linecap="round"><ellipse cx="50" cy="50" rx="40" ry="16"/><ellipse cx="50" cy="50" rx="40" ry="16" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="40" ry="16" transform="rotate(120 50 50)"/></g></svg><span><span style="color:#C0D6EC">ATOLLOM</span> <span class="text-lime">AI</span></span></span>
+      </div>
+      <div class="footer-links">
+        <a href="#" onclick="openModal('privacyModal'); return false;" data-i18n="footer.privacy">Aviso de Privacidad</a>
+        <a href="#" onclick="openModal('termsModal'); return false;" data-i18n="footer.terms">Términos de Servicio</a>
+      </div>
+    </div>
+    <div class="footer-emails">
+      <a href="mailto:contacto@atollom.com">contacto@atollom.com</a>
+      <a href="mailto:ventas@atollom.com">ventas@atollom.com</a>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 ATOLLOM AI. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+    </div>
+  </div>
+</footer>
+
+<!-- CHAT WIDGET -->
+<div class="chat-fab" id="chatFab" aria-label="Abrir chat">💬</div>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="#CCFF00" stroke-width="6" fill="none"><ellipse cx="50" cy="50" rx="42" ry="18"/><ellipse cx="50" cy="50" rx="42" ry="18" transform="rotate(60 50 50)"/><ellipse cx="50" cy="50" rx="42" ry="18" transform="rotate(120 50 50)"/></g></svg>
+      <div>
+        <h4>Atollom AI</h4>
+        <span class="chat-status" data-i18n="chat.status">En línea</span>
+      </div>
+    </div>
+    <button class="chat-close" id="chatClose" aria-label="Cerrar chat">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." data-i18n-placeholder="chat.placeholder" autocomplete="off">
+    <button class="chat-send-btn" id="chatSend" aria-label="Enviar">➤</button>
+  </div>
+</div>
+
+<!-- WHATSAPP FAB -->
+<a href="https://wa.me/525530520825?text=Hola,%20me%20interesa%20conocer%20más%20sobre%20Atollom%20AI" target="_blank" rel="noopener" class="whatsapp-fab" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner">
+  <p data-i18n="cookie.text">Este sitio utiliza cookies esenciales para su funcionamiento. Al continuar navegando, aceptas nuestro <a href="#" onclick="openModal('privacyModal'); return false;" style="color:var(--lime-electric);text-decoration:underline;">Aviso de Privacidad</a>.</p>
+  <div class="cookie-btns">
+    <button class="btn btn-primary btn-sm" id="cookieAccept" data-i18n="cookie.accept">Aceptar</button>
+  </div>
+</div>
+
+<!-- PRIVACY MODAL -->
+<div class="modal-overlay" id="privacyModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('privacyModal')">✕</button>
+    <h2 data-i18n="privacy.title">Aviso de Privacidad Integral</h2>
+    <p><strong>ATOLLOM AI</strong> — Última actualización: Marzo 2026</p>
+    <h3>1. Responsable del Tratamiento de Datos</h3>
+    <p>ATOLLOM AI (en adelante "Atollom") es responsable del tratamiento de sus datos personales conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP) y su Reglamento. Contacto: <strong>contacto@atollom.com</strong></p>
+    <h3>2. Datos Personales que Recabamos</h3>
+    <p>Recabamos los siguientes datos personales: nombre completo, correo electrónico, número telefónico, nombre de empresa, y cualquier información que usted voluntariamente proporcione a través de nuestros formularios de contacto o chat.</p>
+    <h3>3. Finalidades del Tratamiento</h3>
+    <ul>
+      <li><strong>Primarias:</strong> Atender solicitudes de información, dar seguimiento a prospectos comerciales, proveer demostraciones de nuestros servicios, y establecer relaciones comerciales.</li>
+      <li><strong>Secundarias:</strong> Enviar comunicaciones sobre nuevos servicios, actualizaciones y contenido relevante. Puede oponerse a las finalidades secundarias contactándonos.</li>
+    </ul>
+    <h3>4. Transferencia de Datos</h3>
+    <p>Atollom NO vende, alquila ni comparte sus datos personales con terceros para fines no autorizados. Los datos pueden ser procesados por servicios de infraestructura tecnológica (hosting, email) bajo estrictos acuerdos de confidencialidad.</p>
+    <h3>5. Derechos ARCO</h3>
+    <p>Usted tiene derecho a Acceder, Rectificar, Cancelar u Oponerse al tratamiento de sus datos personales (Derechos ARCO). Para ejercer estos derechos, envíe una solicitud a <strong>contacto@atollom.com</strong> con el asunto "Derechos ARCO" incluyendo: nombre completo, descripción clara de los datos sobre los que desea ejercer su derecho, y copia de documento de identificación.</p>
+    <h3>6. Medidas de Seguridad</h3>
+    <p>Implementamos medidas de seguridad administrativas, técnicas y físicas para proteger sus datos: encriptación AES-256, protocolos TLS 1.3, arquitectura Zero Trust, y auditorías periódicas de seguridad.</p>
+    <h3>7. Cookies</h3>
+    <p>Este sitio utiliza únicamente cookies esenciales para su funcionamiento técnico. No utilizamos cookies de rastreo ni de publicidad.</p>
+    <h3>8. Modificaciones al Aviso</h3>
+    <p>Nos reservamos el derecho de modificar este Aviso de Privacidad. Las modificaciones estarán disponibles en nuestro sitio web.</p>
+  </div>
+</div>
+
+<!-- TERMS MODAL -->
+<div class="modal-overlay" id="termsModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('termsModal')">✕</button>
+    <h2 data-i18n="terms.title">Términos de Servicio</h2>
+    <p><strong>ATOLLOM AI</strong> — Última actualización: Marzo 2026</p>
+    <h3>1. Aceptación de Términos</h3>
+    <p>Al acceder y utilizar el sitio web de Atollom AI (atollom.com / atollom.com.mx), usted acepta estos Términos de Servicio en su totalidad.</p>
+    <h3>2. Descripción del Servicio</h3>
+    <p>Atollom AI ofrece soluciones de inteligencia artificial para la automatización y optimización de procesos de negocio, incluyendo integración con sistemas de gestión empresarial, análisis de datos y generación de reportes.</p>
+    <h3>3. Uso Aceptable</h3>
+    <ul>
+      <li>No intentar acceder a sistemas o datos sin autorización.</li>
+      <li>No realizar ingeniería inversa de nuestro software o algoritmos.</li>
+      <li>No utilizar el servicio para fines ilegales o fraudulentos.</li>
+      <li>No intentar vulnerar las medidas de seguridad del sistema.</li>
+    </ul>
+    <h3>4. Propiedad Intelectual</h3>
+    <p>Todo el contenido, marca, logotipo, software y tecnología de Atollom AI son propiedad exclusiva de la empresa y están protegidos por las leyes de propiedad intelectual aplicables. Queda prohibida su reproducción sin autorización expresa.</p>
+    <h3>5. Limitación de Responsabilidad</h3>
+    <p>Las demostraciones interactivas en este sitio utilizan datos ficticios con fines ilustrativos. Atollom AI no se responsabiliza por decisiones tomadas basándose exclusivamente en datos de demostración.</p>
+    <h3>6. Confidencialidad</h3>
+    <p>Toda información compartida durante el proceso comercial se tratará como confidencial y estará protegida bajo acuerdos de no divulgación (NDA) cuando se establezca una relación contractual.</p>
+    <h3>7. Ley Aplicable</h3>
+    <p>Estos términos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia se someterá a los tribunales competentes de la Ciudad de México.</p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
