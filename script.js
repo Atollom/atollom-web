@@ -2,6 +2,31 @@
 (function(){
 'use strict';
 
+// === SECURITY / ANTI-F12 (MODO DIOS) ===
+// Deshabilitar Clic Derecho
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// Deshabilitar atajos de teclado de DevTools y Visualización de Código
+document.addEventListener('keydown', e => {
+  if (
+    e.key === 'F12' ||
+    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) ||
+    (e.ctrlKey && (e.key === 'U' || e.key === 'u'))
+  ) {
+    e.preventDefault();
+  }
+});
+
+// Trampa de Consola (Congela al usuario si logra abrir DevTools)
+setInterval(function() {
+  const before = new Date().getTime();
+  debugger;
+  const after = new Date().getTime();
+  if (after - before > 100) {
+    document.body.innerHTML = '<div style="background:#0A1628;color:#CCFF00;height:100vh;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:2rem;text-align:center;">ATOLLOM SECURITY<br>INSPECTION BLOCKED</div>';
+  }
+}, 1000);
+
 // === I18N TRANSLATIONS ===
 const T = {
 es: {

@@ -1,7 +1,32 @@
+// Rate limiting en memoria (Simple)
+const rateLimitMap = new Map();
+const LIMIT = 10; // Peticiones máximas
+const WINDOW_MS = 60000; // Por minuto (60s)
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
+
+  // Identificar IP del cliente
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+  
+  // Limpiar mapa antiguo (Recolección de basura)
+  const now = Date.now();
+  for (const [key, data] of rateLimitMap.entries()) {
+    if (now - data.timestamp > WINDOW_MS) rateLimitMap.delete(key);
+  }
+
+  // Revisar Rate Limit
+  const userRecord = rateLimitMap.get(ip) || { count: 0, timestamp: now };
+  if (userRecord.count >= LIMIT && (now - userRecord.timestamp) < WINDOW_MS) {
+    return res.status(429).json({ error: 'Demasiadas peticiones. Por favor, espera un minuto.' });
+  }
+
+  // Actualizar contador
+  userRecord.count++;
+  if (userRecord.count === 1) userRecord.timestamp = now;
+  rateLimitMap.set(ip, userRecord);
 
   const { history } = req.body;
   const apiKey = process.env.GEMINI_API_KEY;
