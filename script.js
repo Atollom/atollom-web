@@ -247,14 +247,20 @@ function processChat(input) {
 
   switch(chatState) {
     case 'askName':
-      leadData.name = input;
+      let cleanName = input.replace(/^(hola\s*,?\s*|buenos\s+dias\s*,?\s*|buenas\s+tardes\s*,?\s*)?(soy\s+|me\s+llamo\s+|mi\s+nombre\s+es\s+)/i, '').trim();
+      if (!cleanName) cleanName = input.trim();
+      cleanName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+      leadData.name = cleanName;
       chatState = 'askCompany';
-      botReply(`¡Mucho gusto, **${input}**! ¿De qué empresa nos visitas?`);
+      botReply(`¡Mucho gusto, **${cleanName}**! ¿De qué empresa nos visitas?`);
       break;
     case 'askCompany':
-      leadData.company = input;
+      let cleanCompany = input.replace(/^(de\s+|vengo\s+de\s+|somos\s+(de\s+)?|mi\s+empresa\s+es\s+)/i, '').trim();
+      if (!cleanCompany) cleanCompany = input.trim();
+      cleanCompany = cleanCompany.charAt(0).toUpperCase() + cleanCompany.slice(1);
+      leadData.company = cleanCompany;
       chatState = 'askEmail';
-      botReply(`Excelente, **${input}**. ¿Me compartes tu correo electrónico para poder darte seguimiento?`);
+      botReply(`Excelente, **${cleanCompany}**. ¿Me compartes tu correo electrónico para poder darte seguimiento?`);
       break;
     case 'askEmail':
       leadData.email = input;
