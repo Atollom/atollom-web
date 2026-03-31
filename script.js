@@ -207,8 +207,8 @@ const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 
-let chatState = 'greeting'; // greeting, askName, askCompany, askEmail, ready
-let leadData = {};
+let chatHistory = [];
+let leadEnviado = false;
 
 // AI Setup: chatKnowledge and findAnswer have been deprecated in favor of Gemini Serverless Function.
 
@@ -234,90 +234,51 @@ function removeTyping() {
   if (el) el.remove();
 }
 
-function botReply(text, delay) {
-  delay = delay || 800;
-  showTyping();
-  setTimeout(() => { removeTyping(); addMsg(text, 'bot'); }, delay);
-}
-
 function processChat(input) {
   if (!input.trim()) return;
   addMsg(input, 'user');
   chatInput.value = '';
 
-  switch(chatState) {
-    case 'askName':
-      let lp = input.toLowerCase();
-      if (lp.includes('por que') || lp.includes('para que') || lp.includes('por q') || lp.includes('para q') || lp.includes('obligatorio') || lp.includes('no quiero')) {
-        botReply('Solo pido este dato para darte un trato directo y corporativo. Prometo no ser intrusivo. 😊 ¿Cómo prefieres que te llame?');
-        return;
-      }
-      let cleanName = input.replace(/^(hola\s*,?\s*|buenos\s+dias\s*,?\s*|buenas\s+tardes\s*,?\s*)?(soy\s+|me\s+llamo\s+|mi\s+nombre\s+es\s+)/i, '').trim();
-      if (!cleanName) cleanName = input.trim();
-      cleanName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
-      leadData.name = cleanName;
-      chatState = 'askCompany';
-      botReply(`¡Mucho gusto, **${cleanName}**! ¿De qué empresa nos visitas?`);
-      break;
-    case 'askCompany':
-      let lc = input.toLowerCase();
-      if (lc.includes('por que') || lc.includes('para que') || lc.includes('por q') || lc.includes('para q') || lc.includes('no tengo') || lc.includes('independiente') || lc.includes('ninguna')) {
-        leadData.company = "Independiente";
-        chatState = 'askEmail';
-        botReply(`Entiendo, como profesional independiente también podemos escalar tus datos. ¿Podrías compartirme un correo electrónico para enviarte un demo?`);
-        return;
-      }
-      let cleanCompany = input.replace(/^(de\s+|vengo\s+de\s+|somos\s+(de\s+)?|mi\s+empresa\s+es\s+)/i, '').trim();
-      if (!cleanCompany) cleanCompany = input.trim();
-      cleanCompany = cleanCompany.charAt(0).toUpperCase() + cleanCompany.slice(1);
-      leadData.company = cleanCompany;
-      chatState = 'askEmail';
-      botReply(`Excelente, **${cleanCompany}**. ¿Me compartes tu correo electrónico para poder dar un seguimiento ejecutivo?`);
-      break;
-    case 'askEmail':
-      let le = input.toLowerCase();
-      if (!le.includes('@') && !le.includes('no ') && !le.includes('por que') && !le.includes('para que')) {
-         botReply('Ese no parece un correo válido. Para poder mostrarte cómo la IA de Atollom procesa información, requiero al menos un contacto. ¿Cuál es tu email?');
-         return;
-      } else if (le.includes('por q') || le.includes('para q') || le.includes('no quiero')) {
-         leadData.email = "anonimo@sin-correo.com";
-      } else {
-         leadData.email = input;
-      }
-      
-      chatState = 'ready';
-      sendLead(leadData);
-      botReply(`¡Perfecto! El protocolo de identificación ha terminado. Soy Gemini (tu analista de Atollom AI en vivo). Prometo responder de forma ejecutiva a cualquier duda que tengas sobre IA, seguridad, arquitectura o cómo integrarnos a tu ERP. ¿En qué te asesoro hoy, ${leadData.name}?`, 1200);
-      break;
-    case 'ready':
-      showTyping();
-      fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input, leadData: leadData })
-      })
-      .then(res => res.json())
-      .then(data => {
-        removeTyping();
-        addMsg(data.reply || 'Hubo un inconveniente conectando con nuestra inteligencia de datos.', 'bot');
-      })
-      .catch((err) => {
-        console.error('Chat AI Error:', err);
-        removeTyping();
-        addMsg('Error de conectividad en el servidor. Intenta de nuevo más tarde.', 'bot');
-      });
-      break;
+  chatHistory.push({ role: 'user', text: input });
+
+  // Intelligent Interceptor: Busca emails de forma transparente
+  if (!leadEnviado) {
+    const emails = input.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
+    if (emails && emails.length > 0) {
+      sendLead(emails[0]);
+      leadEnviado = true;
+    }
   }
+
+  showTyping();
+  
+  fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ history: chatHistory })
+  })
+  .then(res => res.json())
+  .then(data => {
+    removeTyping();
+    const replyText = data.reply || 'Hubo un inconveniente conectando con nuestra inteligencia de datos.';
+    addMsg(replyText, 'bot');
+    chatHistory.push({ role: 'bot', text: replyText });
+  })
+  .catch((err) => {
+    console.error('Chat AI Error:', err);
+    removeTyping();
+    addMsg('Error de conectividad en el servidor. Intenta de nuevo más tarde.', 'bot');
+    chatHistory.pop(); // Revert user message to prevent desync
+  });
 }
 
-function sendLead(data) {
-  // Send lead via FormSubmit
+function sendLead(email) {
+  // Send intercepted lead via FormSubmit
   const form = new FormData();
-  form.append('nombre', data.name || '');
-  form.append('empresa', data.company || '');
-  form.append('email', data.email || '');
-  form.append('origen', 'Chat Widget');
-  form.append('_subject', 'Nuevo Lead desde Chat - atollom.com');
+  form.append('email_interceptado', email);
+  form.append('historial_completo', JSON.stringify(chatHistory, null, 2));
+  form.append('origen', 'Intelligent Interceptor Widget');
+  form.append('_subject', 'Nuevo Lead Interceptado - atollom.com');
   form.append('_captcha', 'false');
   form.append('_template', 'box');
   fetch('https://formsubmit.co/ajax/ventas@atollom.com', {
@@ -328,11 +289,29 @@ function sendLead(data) {
 chatFab.addEventListener('click', () => {
   chatFab.classList.add('hidden');
   chatWindow.classList.add('open');
-  if (chatState === 'greeting') {
-    chatState = 'askName';
-    setTimeout(() => {
-      addMsg('👋 ¡Hola! Soy el asistente virtual de **Atollom AI**.\n\nAntes de empezar, ¿me dices tu nombre?', 'bot');
-    }, 300);
+  if (chatHistory.length === 0) {
+    showTyping();
+    
+    const initMsg = { role: 'user', text: 'Hola' };
+    chatHistory.push(initMsg);
+    
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ history: chatHistory })
+    })
+    .then(res => res.json())
+    .then(data => {
+      removeTyping();
+      const reply = data.reply || '¡Hola! Soy el agente de inteligencia de Atollom AI. ¿Con quién tengo el gusto?';
+      addMsg(reply, 'bot');
+      chatHistory.push({ role: 'bot', text: reply });
+    }).catch(() => {
+      removeTyping();
+      const backup = '¡Hola! Soy el asistente virtual de **Atollom AI**. ¿Con quién hablo?';
+      addMsg(backup, 'bot');
+      chatHistory.push({ role: 'bot', text: backup });
+    });
   }
 });
 

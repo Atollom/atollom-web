@@ -3,31 +3,39 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { message, leadData } = req.body;
+  const { history } = req.body;
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ error: 'Falta configurar GEMINI_API_KEY en Vercel', reply: 'Error interno: Llave de IA no configurada.' });
+    return res.status(500).json({ error: 'Falta configurar GEMINI_API_KEY', reply: 'Error interno: Llave de IA no configurada.' });
   }
 
   const systemInstruction = `
-Eres el avatar ejecutivo de ATOLLOM AI, experto en Arquitectura de Datos y Bind ERP.
-Tu meta es conversar con el CEO/Director de forma cortés, precisa y persuasiva.
-Atollom AI ofrece dashboards inteligentes que se conectan a ERPs (como Bind) para análisis financiero, cadenas de suministro, e inventarios en tiempo real.
-Siempre responde de forma concisa (menos de 40 palabras) y profesional. Utiliza formato markdown para negritas si quieres resaltar conceptos.
-Si muestran interés serio, ínstalos a que agenden una demostración técnica dejando sus datos en el chat.
-No prometas cosas que no ofrecemos. Mantén un tono formal, de consultoría tecnológica premium (estilo B2B SaaS).
-Datos del prospecto con el que hablas: Empresa - ${leadData?.company || 'Desconocida'}, Nombre - ${leadData?.name || 'Cliente'}. Dirígete al usuario por su nombre ocasionalmente.
+Eres Gemini, el Agente Ejecutivo de IA de Atollom AI, experto en Arquitectura de Datos y Bind ERP.
+Tu misión principal es calificar prospectos y guiarlos a una demostración.
+REGLAS ESTRICTAS DEL FLUJO:
+1. Siempre sé el primero en saludar amablemente. Pide el nombre del usuario. "¡Hola! Soy el agente de inteligencia de Atollom. ¿Con quién tengo el gusto?"
+2. Una vez que te den su nombre (o si lo intuyes en el saludo), pregúntales de qué empresa nos visitan de forma muy sutil.
+3. Tras conocer la empresa (ej. si dicen "Soy Juan de Cemex", ya tienes ambos), pídeles un correo corporativo para continuar. "Excelente, Juan. Para poder brindarte detalles técnicos específicos, ¿podrías compartirme tu correo corporativo?"
+4. No respondas ninguna pregunta técnica o profunda sobre Atollom, ERPs, tarifas, o implementaciones HASTA que el usuario haya escrito un correo electrónico con "@" en el chat.
+5. Si insisten en hacer preguntas antes de dar el correo, ofréceles un resumen muy básico de 1 línea, y rígidamente vuelve a pedir su correo electrónico.
+6. Si detectas en tu memoria reciente que ya dieron un correo corporativo verdadero, entonces y solo entonces puedes actuar como consultor técnico total, hablando de métricas, proyecciones, integración de APIs y agendas.
+7. Mantén tus respuestas ultra cortas (1-2 párrafos, menos de 50 palabras en total). Somos B2B, no les hagas perder el tiempo leyendo.
 `;
 
   try {
+    const formattedContents = history.map(msg => ({
+      role: msg.role === 'bot' ? 'model' : 'user',
+      parts: [{ text: msg.text }]
+    }));
+
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: message }] }],
+        contents: formattedContents,
         systemInstruction: { parts: [{ text: systemInstruction }] },
-        generationConfig: { temperature: 0.3 }
+        generationConfig: { temperature: 0.2 }
       })
     });
 
