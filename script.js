@@ -247,6 +247,11 @@ function processChat(input) {
 
   switch(chatState) {
     case 'askName':
+      let lp = input.toLowerCase();
+      if (lp.includes('por que') || lp.includes('para que') || lp.includes('por q') || lp.includes('para q') || lp.includes('obligatorio') || lp.includes('no quiero')) {
+        botReply('Solo pido este dato para darte un trato directo y corporativo. Prometo no ser intrusivo. 😊 ¿Cómo prefieres que te llame?');
+        return;
+      }
       let cleanName = input.replace(/^(hola\s*,?\s*|buenos\s+dias\s*,?\s*|buenas\s+tardes\s*,?\s*)?(soy\s+|me\s+llamo\s+|mi\s+nombre\s+es\s+)/i, '').trim();
       if (!cleanName) cleanName = input.trim();
       cleanName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
@@ -255,18 +260,34 @@ function processChat(input) {
       botReply(`¡Mucho gusto, **${cleanName}**! ¿De qué empresa nos visitas?`);
       break;
     case 'askCompany':
+      let lc = input.toLowerCase();
+      if (lc.includes('por que') || lc.includes('para que') || lc.includes('por q') || lc.includes('para q') || lc.includes('no tengo') || lc.includes('independiente') || lc.includes('ninguna')) {
+        leadData.company = "Independiente";
+        chatState = 'askEmail';
+        botReply(`Entiendo, como profesional independiente también podemos escalar tus datos. ¿Podrías compartirme un correo electrónico para enviarte un demo?`);
+        return;
+      }
       let cleanCompany = input.replace(/^(de\s+|vengo\s+de\s+|somos\s+(de\s+)?|mi\s+empresa\s+es\s+)/i, '').trim();
       if (!cleanCompany) cleanCompany = input.trim();
       cleanCompany = cleanCompany.charAt(0).toUpperCase() + cleanCompany.slice(1);
       leadData.company = cleanCompany;
       chatState = 'askEmail';
-      botReply(`Excelente, **${cleanCompany}**. ¿Me compartes tu correo electrónico para poder darte seguimiento?`);
+      botReply(`Excelente, **${cleanCompany}**. ¿Me compartes tu correo electrónico para poder dar un seguimiento ejecutivo?`);
       break;
     case 'askEmail':
-      leadData.email = input;
+      let le = input.toLowerCase();
+      if (!le.includes('@') && !le.includes('no ') && !le.includes('por que') && !le.includes('para que')) {
+         botReply('Ese no parece un correo válido. Para poder mostrarte cómo la IA de Atollom procesa información, requiero al menos un contacto. ¿Cuál es tu email?');
+         return;
+      } else if (le.includes('por q') || le.includes('para q') || le.includes('no quiero')) {
+         leadData.email = "anonimo@sin-correo.com";
+      } else {
+         leadData.email = input;
+      }
+      
       chatState = 'ready';
       sendLead(leadData);
-      botReply(`¡Perfecto! Ya tengo tus datos. Ahora pregúntame lo que quieras sobre Atollom AI. Puedo contarte sobre:\n\n• Nuestros **servicios**\n• La **arquitectura** de 4 agentes\n• **Seguridad** y privacidad\n• **Industrias** que atendemos\n• Cómo agendar una **demo**`, 1200);
+      botReply(`¡Perfecto! El protocolo de identificación ha terminado. Soy Gemini (tu analista de Atollom AI en vivo). Prometo responder de forma ejecutiva a cualquier duda que tengas sobre IA, seguridad, arquitectura o cómo integrarnos a tu ERP. ¿En qué te asesoro hoy, ${leadData.name}?`, 1200);
       break;
     case 'ready':
       showTyping();
