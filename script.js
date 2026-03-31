@@ -210,16 +210,7 @@ const chatSend = document.getElementById('chatSend');
 let chatState = 'greeting'; // greeting, askName, askCompany, askEmail, ready
 let leadData = {};
 
-const chatKnowledge = {
-  servicios: 'Ofrecemos un ecosistema de inteligencia de datos que permite obtener reportes financieros, análisis de inventarios y proyecciones de ventas en segundos a través de una interfaz de chat intuitiva. Nuestra solución se conecta con cualquier sistema de gestión empresarial.',
-  arquitectura: 'Nuestro sistema cuenta con 4 agentes especializados:\n\n🧭 **Estrategia (Router)** — Dirige consultas al área correcta\n📊 **Analista de Datos** — Extrae y procesa números reales\n📈 **Visualizador** — Crea gráficas de alto impacto\n🛡️ **Supervisor** — Garantiza precisión y seguridad',
-  seguridad: 'Implementamos encriptación AES-256, TLS 1.3, arquitectura Zero Trust y auditorías periódicas. Tus datos nunca se comparten con terceros. Somos ERP agnósticos: nos conectamos de forma segura sin exponer credenciales.',
-  industrias: 'Atollom AI funciona para CUALQUIER industria. Tenemos experiencia en: Usuarios de ERPs, Sector Médico (ortopedia), Turismo de Lujo, Retail & Moda, Restaurantes, E-commerce, y más. Si tu negocio tiene datos, podemos transformarlos.',
-  precio: 'Cada solución se personaliza según las necesidades de tu negocio. Te invito a agendar una demo para que podamos evaluar tu caso y ofrecerte la mejor propuesta. ¿Te gustaría que te contactemos?',
-  demo: 'Puedes agendar una demo de dos formas:\n\n1. Llena el formulario en la sección de contacto\n2. Escríbenos directamente por WhatsApp al +52 55 3052 0825\n\n¡Estaremos encantados de mostrarte lo que Atollom AI puede hacer por tu negocio!',
-  integracion: 'Somos ERP agnósticos — nos integramos con cualquier sistema de gestión empresarial del mercado. Nuestra arquitectura de APIs permite conectar tu información de forma segura sin importar la plataforma que utilices.',
-  contacto: 'Puedes contactarnos por:\n\n📧 contacto@atollom.com\n📧 ventas@atollom.com\n📱 WhatsApp: +52 55 3052 0825\n\nRespondemos en menos de 2 horas en horario laboral.',
-};
+// AI Setup: chatKnowledge and findAnswer have been deprecated in favor of Gemini Serverless Function.
 
 function addMsg(text, sender) {
   const div = document.createElement('div');
@@ -249,24 +240,6 @@ function botReply(text, delay) {
   setTimeout(() => { removeTyping(); addMsg(text, 'bot'); }, delay);
 }
 
-function findAnswer(input) {
-  const q = input.toLowerCase();
-  const keywords = {
-    servicios: ['servicio','qué hacen','que hacen','ofrecen','qué es','que es','producto','solución','solucion','what do you','services'],
-    arquitectura: ['agente','arquitectura','sistema','cómo funciona','como funciona','pipeline','technology','how it works'],
-    seguridad: ['seguridad','seguro','datos','privacidad','encriptación','hack','protección','security','safe','privacy'],
-    industrias: ['industria','sector','nicho','médic','medic','restaurante','retail','yate','ecommerce','negocio','industry'],
-    precio: ['precio','costo','cuánto','cuanto','cuesta','tarifa','plan','price','cost','how much'],
-    demo: ['demo','agenda','agendar','prueba','probar','reunión','reunión','meeting','try','book'],
-    integracion: ['integración','integra','erp','conectar','api','bind','sistema de gestión','integration','connect'],
-    contacto: ['contacto','teléfono','telefono','email','correo','whatsapp','contact','phone'],
-  };
-  for (const [key, words] of Object.entries(keywords)) {
-    if (words.some(w => q.includes(w))) return chatKnowledge[key];
-  }
-  return null;
-}
-
 function processChat(input) {
   if (!input.trim()) return;
   addMsg(input, 'user');
@@ -290,12 +263,22 @@ function processChat(input) {
       botReply(`¡Perfecto! Ya tengo tus datos. Ahora pregúntame lo que quieras sobre Atollom AI. Puedo contarte sobre:\n\n• Nuestros **servicios**\n• La **arquitectura** de 4 agentes\n• **Seguridad** y privacidad\n• **Industrias** que atendemos\n• Cómo agendar una **demo**`, 1200);
       break;
     case 'ready':
-      const answer = findAnswer(input);
-      if (answer) {
-        botReply(answer, 1000);
-      } else {
-        botReply('Interesante pregunta. Para darte la mejor respuesta, te sugiero hablar directamente con nuestro equipo. ¿Te gustaría que te contactemos por WhatsApp o email?\n\nTambién puedes preguntarme sobre: **servicios**, **seguridad**, **arquitectura**, **industrias**, o **demo**.', 1000);
-      }
+      showTyping();
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input, leadData: leadData })
+      })
+      .then(res => res.json())
+      .then(data => {
+        removeTyping();
+        addMsg(data.reply || 'Hubo un inconveniente conectando con nuestra inteligencia de datos.', 'bot');
+      })
+      .catch((err) => {
+        console.error('Chat AI Error:', err);
+        removeTyping();
+        addMsg('Error de conectividad en el servidor. Intenta de nuevo más tarde.', 'bot');
+      });
       break;
   }
 }
