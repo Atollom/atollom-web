@@ -43,7 +43,7 @@ REGLAS ESTRICTAS DEL FLUJO:
     
     if (data.error) {
        console.error("Gemini Error:", data.error);
-       return res.status(500).json({reply: "Hubo un error de conexión con nuestros servidores de IA."});
+       return res.status(500).json({reply: "Gemini API Error: " + (data.error.message || JSON.stringify(data.error))});
     }
 
     const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "No pude procesar la solicitud.";
