@@ -298,17 +298,28 @@ function processChat(input) {
 }
 
 function sendLead(email) {
-  // Send intercepted lead via FormSubmit
-  const form = new FormData();
-  form.append('email_interceptado', email);
-  form.append('historial_completo', JSON.stringify(chatHistory, null, 2));
-  form.append('origen', 'Intelligent Interceptor Widget');
-  form.append('_subject', 'Nuevo Lead Interceptado - atollom.com');
-  form.append('_captcha', 'false');
-  form.append('_template', 'box');
-  fetch('https://formsubmit.co/ajax/ventas@atollom.com', {
-    method: 'POST', body: form
-  }).catch(() => {});
+  // Enviar Lead a nuestra propia API (Supabase)
+  fetch('/api/leads', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: email,
+      history: chatHistory,
+      source: 'Atollom Chat Widget'
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log('Lead guardado exitosamente:', data);
+  })
+  .catch(err => {
+    console.warn('Error guardando lead:', err);
+    // Fallback: Si nuestra API falla, intentar FormSubmit como respaldo
+    const form = new FormData();
+    form.append('email', email);
+    form.append('history', JSON.stringify(chatHistory));
+    fetch('https://formsubmit.co/ajax/ventas@atollom.com', { method: 'POST', body: form });
+  });
 }
 
 chatFab.addEventListener('click', () => {

@@ -10,11 +10,11 @@
   --navy-medium: #111D35;
   --navy-light: #1A2A4A;
   --navy-card: #0D1B30;
-  --lime-electric: #CCFF00;
-  --lime-hover: #D4FF33;
-  --lime-soft: rgba(204, 255, 0, 0.15);
-  --lime-glow: rgba(204, 255, 0, 0.4);
-  --lime-border: rgba(204, 255, 0, 0.25);
+  --lime-electric: #A4DA30;
+  --lime-hover: #B5ED39;
+  --lime-soft: rgba(164, 218, 48, 0.15);
+  --lime-glow: rgba(164, 218, 48, 0.4);
+  --lime-border: rgba(164, 218, 48, 0.25);
   --text-primary: #E8ECF1;
   --text-secondary: #8892A5;
   --text-dark: #0A1628;
@@ -366,9 +366,11 @@ section {
 }
 
 .nav-logo-img {
-  height: 56px;
+  height: 48px;
   width: auto;
+  min-width: 48px;
   object-fit: contain;
+  display: block;
 }
 
 .nav-logo svg {
@@ -497,14 +499,15 @@ section {
 .hero-bg-gradient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 20% 50%, rgba(17, 29, 53, 0.8) 0%, var(--navy-deep) 70%);
+  background: radial-gradient(circle at 10% 30%, rgba(164, 218, 48, 0.1) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 50%, rgba(17, 29, 53, 0.8) 0%, var(--navy-deep) 70%);
   z-index: 0;
 }
 
 .hero-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--gap-xl);
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--gap-2xl);
   align-items: center;
   position: relative;
   z-index: 1;
@@ -538,18 +541,19 @@ section {
 }
 
 .hero-h1 {
-  margin-bottom: var(--gap-md);
+  margin-bottom: var(--gap-lg);
   animation: fadeInUp 0.8s var(--ease-out) 0.1s both;
-  line-height: 1.15;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
 }
 
 .hero-h2 {
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-size: clamp(1.1rem, 1.6vw, 1.25rem);
   font-weight: 400;
   color: var(--text-secondary);
-  line-height: 1.9;
-  max-width: 520px;
-  margin-bottom: var(--gap-lg);
+  line-height: 1.8;
+  max-width: 580px;
+  margin-bottom: var(--gap-xl);
   animation: fadeInUp 0.8s var(--ease-out) 0.2s both;
 }
 

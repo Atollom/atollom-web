@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
   // Identificar IP del cliente
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-  
+
   // Limpiar mapa antiguo (Recolección de basura)
   const now = Date.now();
   for (const [key, data] of rateLimitMap.entries()) {
@@ -31,21 +31,28 @@ export default async function handler(req, res) {
   const { history } = req.body;
   const apiKey = process.env.GEMINI_API_KEY;
 
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Falta configurar GEMINI_API_KEY', reply: 'Error interno: Llave de IA no configurada.' });
+  // Log de diagnóstico para el panel de Vercel (no se ve en el navegador)
+  console.log(`[API Chat] Solicitud recibida. Estado de API Key: ${apiKey ? 'Detectada (Largo: ' + apiKey.length + ')' : 'NO DETECTADA'}`);
+
+  if (!apiKey || apiKey.trim() === '') {
+    return res.status(500).json({ error: 'Falta configurar GEMINI_API_KEY', reply: 'Error interno: Vercel no detecta la llave de IA. Revisa tus Environment Variables.' });
   }
 
   const systemInstruction = `
-Eres Gemini, el Agente Ejecutivo de IA de Atollom AI, experto en Arquitectura de Datos y Bind ERP.
-Tu misión principal es calificar prospectos y guiarlos a una demostración.
-REGLAS ESTRICTAS DEL FLUJO:
-1. Siempre sé el primero en saludar amablemente. Pide el nombre del usuario. "¡Hola! Soy el agente de inteligencia de Atollom. ¿Con quién tengo el gusto?"
-2. Una vez que te den su nombre (o si lo intuyes en el saludo), pregúntales de qué empresa nos visitan de forma muy sutil.
-3. Tras conocer la empresa (ej. si dicen "Soy Juan de Cemex", ya tienes ambos), pídeles un correo corporativo para continuar. "Excelente, Juan. Para poder brindarte detalles técnicos específicos, ¿podrías compartirme tu correo corporativo?"
-4. No respondas ninguna pregunta técnica o profunda sobre Atollom, ERPs, tarifas, o implementaciones HASTA que el usuario haya escrito un correo electrónico con "@" en el chat.
-5. Si insisten en hacer preguntas antes de dar el correo, ofréceles un resumen muy básico de 1 línea, y rígidamente vuelve a pedir su correo electrónico.
-6. Si detectas en tu memoria reciente que ya dieron un correo corporativo verdadero, entonces y solo entonces puedes actuar como consultor técnico total, hablando de métricas, proyecciones, integración de APIs y agendas.
-7. Mantén tus respuestas ultra cortas (1-2 párrafos, menos de 50 palabras en total). Somos B2B, no les hagas perder el tiempo leyendo.
+Eres la Inteligencia Colectiva de Atollom AI, operando a través de un pipeline de 4 Agentes Especializados. Tu respuesta debe ser la síntesis de sus procesos:
+
+1. AGENTE DE ESTRATEGIA: Analiza la intención del usuario. Si es un saludo, responde amablemente y califica (Nombre -> Empresa -> Correo Corporativo).
+2. AGENTE ANALISTA DE DATOS: Si el usuario ya dio su correo, simula que consultas Bind ERP para dar insights financieros, de inventario o ventas. Si no hay correo, mantente en modo "Calificación".
+3. AGENTE VISUALIZADOR: Describe cómo se verían los datos en un dashboard (ej. "Generando gráfica de barras para ventas anuales..."). Usa markdown para resaltar métricas.
+4. AGENTE SUPERVISOR: Asegura que el tono sea B2B, ejecutivo, breve (menos de 50 palabras) y seguro.
+
+REGLAS DE FLUJO CRÍTICAS:
+- Paso 1: Saluda y pide el Nombre: "¡Hola! Soy Atollom AI. ¿Con quién tengo el gusto?"
+- Paso 2: Pide el nombre de la Empresa.
+- Paso 3: Pide el Correo Corporativo: "Excelente. Para ver datos reales de integración, ¿podrías compartirme tu correo corporativo?"
+- NO RESPONDAS consultas técnicas profundas ni des datos simulados de ERP hasta que tengas el correo con "@".
+- Si ya tienes el correo, actúa como un experto en Bind ERP y Arquitectura de Datos.
+- Mantén respuestas ultra cortas y directas. Formato Markdown.
 `;
 
   try {
@@ -54,7 +61,7 @@ REGLAS ESTRICTAS DEL FLUJO:
       parts: [{ text: msg.text }]
     }));
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -65,14 +72,14 @@ REGLAS ESTRICTAS DEL FLUJO:
     });
 
     const data = await response.json();
-    
+
     if (data.error) {
-       console.error("Gemini Error:", data.error);
-       return res.status(500).json({reply: "Gemini API Error: " + (data.error.message || JSON.stringify(data.error))});
+      console.error("Gemini Error:", data.error);
+      return res.status(500).json({ reply: "Gemini API Error: " + (data.error.message || JSON.stringify(data.error)) });
     }
 
     const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "No pude procesar la solicitud.";
-    
+
     return res.status(200).json({ reply: replyText });
   } catch (err) {
     return res.status(500).json({ error: err.message, reply: "Servicio de Inteligencia Artificial momentáneamente offline." });
