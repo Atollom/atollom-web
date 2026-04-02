@@ -12,59 +12,64 @@ export default async function handler(req, res) {
 
   // Validar email
   if (!email || typeof email !== 'string' || !EMAIL_REGEX.test(email.trim())) {
-    return res.status(400).json({ error: 'Email inválido o ausente.' });
+    console.warn("Lead sin email válido, guardando como prospecto parcial.");
   }
 
   // Sanitizar y limitar history
   const safeHistory = Array.isArray(history)
-    ? history.slice(0, MAX_HISTORY_ITEMS).map(msg => ({
+    ? history.slice(-MAX_HISTORY_ITEMS).map(msg => ({
         role: String(msg.role || '').slice(0, 10),
         text: String(msg.text || '').slice(0, MAX_TEXT_LENGTH)
       }))
     : [];
 
-  // Sanitizar source
-  const safeSource = typeof source === 'string'
-    ? source.slice(0, 100)
-    : 'Atollom Web';
-
+  const safeSource = typeof source === 'string' ? source.slice(0, 100) : 'Atollom Web';
   const sbUrl = process.env.SUPABASE_URL;
   const sbKey = process.env.SUPABASE_ANON_KEY;
 
-  if (!sbUrl || !sbKey) {
-    console.error("Falta configuración de Supabase.");
-    return res.status(500).json({ error: 'Atollom Server Error: Credentials not found.' });
-  }
-
   try {
-    // Insertamos el lead en la tabla 'leads' usando la API PostgREST nativa de Supabase
-    // Esto evita dependencias pesadas en el servidor.
-    const response = await fetch(`${sbUrl}/rest/v1/leads`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': sbKey,
-        'Authorization': `Bearer ${sbKey}`,
-        'Prefer': 'return=representation'
-      },
-      body: JSON.stringify({
-        email: email.trim().toLowerCase(),
-        history: safeHistory,
+    // 1. Notificación Inmediata por Email (FormSubmit)
+    // Usamos FormSubmit como bridge para que el usuario reciba el correo al instante.
+    if (email && EMAIL_REGEX.test(email.trim())) {
+      const emailBody = {
+        _subject: `🚀 NUEVO LEAD: ${email}`,
+        email: email,
         source: safeSource,
-        created_at: new Date().toISOString()
-      })
-    });
+        conversation: safeHistory.map(m => `[${m.role}] ${m.text}`).join('\n\n'),
+        _template: 'table',
+        _captcha: 'false'
+      };
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Error al persistir en DB.');
+      fetch('https://formsubmit.co/ajax/ventas@atollom.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailBody)
+      }).catch(e => console.error("Error enviando email:", e));
     }
 
-    return res.status(201).json({ success: true, leadId: data[0]?.id });
+    // 2. Persistencia en Base de Datos (Supabase)
+    if (sbUrl && sbKey) {
+      await fetch(`${sbUrl}/rest/v1/leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': sbKey,
+          'Authorization': `Bearer ${sbKey}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          email: email ? email.toLowerCase() : 'prospecto@atollom.com',
+          history: safeHistory,
+          source: safeSource,
+          created_at: new Date().toISOString()
+        })
+      });
+    }
+
+    return res.status(201).json({ success: true, message: 'Lead procesado correctamente.' });
 
   } catch (err) {
-    console.error("Lead Error:", err.message);
-    return res.status(500).json({ error: 'Error procesando lead. Fallback activo.', details: err.message });
+    console.error("Lead Handler Error:", err.message);
+    return res.status(500).json({ error: 'Error procesando lead.', details: err.message });
   }
 }

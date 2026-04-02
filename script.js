@@ -313,13 +313,12 @@ function processChat(input) {
 
   chatHistory.push({ role: 'user', text: input });
 
-  // Intelligent Interceptor: Busca emails de forma transparente
-  if (!leadEnviado) {
-    const emails = input.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
-    if (emails && emails.length > 0) {
-      sendLead(emails[0]);
-      leadEnviado = true;
-    }
+  // Intelligent Interceptor: Busca datos de contacto de forma proactiva
+  const emailMatch = input.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
+  const phoneMatch = input.match(/(\+?\d{10,15})/g);
+  
+  if (emailMatch || phoneMatch || chatHistory.length % 5 === 0) {
+      sendLead(emailMatch ? emailMatch[0] : null);
   }
 
   showTyping();
@@ -350,27 +349,22 @@ function processChat(input) {
 }
 
 function sendLead(email) {
-  // Enviar Lead a nuestra propia API (Supabase)
+  // Enviar Lead a nuestra propia API (Supabase + Email)
   fetch('/api/leads', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       email: email,
       history: chatHistory,
-      source: 'Atollom Chat Widget'
+      source: 'Atollom AI Agent'
     })
   })
   .then(res => res.json())
   .then(data => {
-    console.log('Lead guardado exitosamente:', data);
+    if (data.success) console.log('Lead sincronizado.');
   })
   .catch(err => {
-    console.warn('Error guardando lead:', err);
-    // Fallback: Si nuestra API falla, intentar FormSubmit como respaldo
-    const form = new FormData();
-    form.append('email', email);
-    form.append('history', JSON.stringify(chatHistory));
-    fetch('https://formsubmit.co/ajax/ventas@atollom.com', { method: 'POST', body: form });
+    console.warn('Error en persistencia:', err);
   });
 }
 
