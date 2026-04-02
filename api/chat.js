@@ -28,8 +28,12 @@ export default async function handler(req, res) {
   if (userRecord.count === 1) userRecord.timestamp = now;
   rateLimitMap.set(ip, userRecord);
 
-  const { history } = req.body;
+  const { history } = req.body || {};
   const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!Array.isArray(history) || history.length === 0) {
+    return res.status(400).json({ reply: 'Historial de chat inválido.' });
+  }
 
   // Log de diagnóstico para el panel de Vercel (no se ve en el navegador)
   console.log(`[API Chat] Solicitud recibida. Estado de API Key: ${apiKey ? 'Detectada (Largo: ' + apiKey.length + ')' : 'NO DETECTADA'}`);
@@ -56,12 +60,14 @@ REGLAS DE FLUJO CRÍTICAS:
 `;
 
   try {
-    const formattedContents = history.map(msg => ({
+    const safeHistory = history.slice(-40); // máximo últimos 40 mensajes
+    const formattedContents = safeHistory.map(msg => ({
       role: msg.role === 'bot' ? 'model' : 'user',
-      parts: [{ text: msg.text }]
+      parts: [{ text: String(msg.text || '').slice(0, 2000) }]
     }));
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      signal: AbortSignal.timeout(15000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -366,9 +366,11 @@ section {
 }
 
 .nav-logo-img {
-  height: 64px;
+  height: 48px;
   width: auto;
+  max-width: 180px;
   object-fit: contain;
+  object-position: left center;
 }
 
 .nav-logo svg {
@@ -491,7 +493,7 @@ section {
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding: 80px 0 30px;
+  padding: 100px 0 60px;
 }
 
 .hero-bg-gradient {
@@ -505,8 +507,8 @@ section {
 .hero-split {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: var(--gap-2xl);
-  align-items: flex-start;
+  gap: var(--gap-xl);
+  align-items: center;
   position: relative;
   z-index: 1;
 }
@@ -539,7 +541,7 @@ section {
 }
 
 .hero-h1 {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   animation: fadeInUp 0.8s var(--ease-out) 0.1s both;
   line-height: 1.05;
   letter-spacing: -0.04em;
@@ -550,8 +552,9 @@ section {
   font-weight: 400;
   color: var(--text-secondary);
   line-height: 1.8;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 20px;
+  margin-bottom: 28px;
+  max-width: 520px;
   animation: fadeInUp 0.8s var(--ease-out) 0.2s both;
 }
 
@@ -559,12 +562,12 @@ section {
   display: flex;
   align-items: center;
   gap: var(--gap-sm);
-  margin-bottom: 20px;
+  margin-bottom: 32px;
   animation: fadeInUp 0.8s var(--ease-out) 0.3s both;
 }
 
 .hero-stats-wrapper {
-  margin-top: 16px;
+  margin-top: 24px;
   padding-top: var(--gap-md);
   border-top: 1px solid var(--white-10);
   animation: fadeInUp 0.8s var(--ease-out) 0.4s both;
@@ -609,7 +612,7 @@ section {
   box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4), 0 0 40px rgba(204, 255, 0, 0.08);
   border: 1px solid var(--glass-border);
   max-width: 700px;
-  margin-top: 30px;
+  margin-top: 0;
   width: 100%;
 }
 
@@ -1953,7 +1956,8 @@ section {
   }
 
   .nav-logo-img {
-    height: 44px;
+    height: 36px;
+    max-width: 140px;
   }
 
   .about-pillars,
