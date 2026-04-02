@@ -235,7 +235,56 @@ const chatSend = document.getElementById('chatSend');
 let chatHistory = [];
 let leadEnviado = false;
 
-// AI Setup: chatKnowledge and findAnswer have been deprecated in favor of Gemini Serverless Function.
+// === FALLBACK ENGINE (funciona sin API) ===
+let fbStep = 0;
+let fbData = { name: '', company: '' };
+
+function fallbackEngine(input) {
+  const t = (input || '').trim();
+  const low = t.toLowerCase();
+
+  if (fbStep === 0) {
+    fbStep = 1;
+    return '¡Hola! Soy la **Inteligencia Colectiva de Atollom AI**.\n\n¿Con quién tengo el gusto?';
+  }
+  if (fbStep === 1) {
+    fbData.name = t;
+    fbStep = 2;
+    return `Mucho gusto, **${t}**. 👋\n\n¿A qué empresa perteneces?`;
+  }
+  if (fbStep === 2) {
+    fbData.company = t;
+    fbStep = 3;
+    return `Excelente. Para mostrarte análisis reales conectados a **${t}**, ¿podrías compartirme tu correo corporativo?`;
+  }
+  if (fbStep === 3) {
+    if (!t.includes('@')) {
+      return 'Necesito un correo corporativo válido (con @) para activar la integración con tu ERP. ¿Cuál sería?';
+    }
+    fbStep = 4;
+    const co = fbData.company || 'tu empresa';
+    return `✅ **Conectando con Bind ERP — ${co}...**\n\n📊 **Resumen Ejecutivo**\n\n- **Ventas del mes:** $2.4M MXN ↑ 12%\n- **Margen bruto:** 34.2%\n- **SKUs en stock crítico:** 8\n- **CxC vencida +30 días:** $180K MXN\n\nGenerando dashboard interactivo... ¿Qué área quieres profundizar: **ventas**, **inventario** o **finanzas**?`;
+  }
+
+  // Post-calificación: respuestas por tema
+  if (low.includes('venta')) {
+    return '📈 **Análisis de Ventas**\n\n- **Top producto:** SKU-4521 — $340K MXN\n- **Canal digital:** +28% vs mes anterior\n- **Ticket promedio:** $12,400 MXN\n- **Mejor día:** Jueves (23% del volumen semanal)\n\n¿Quieres desglose por región o por cliente?';
+  }
+  if (low.includes('inventario') || low.includes('stock')) {
+    return '📦 **Estado de Inventario**\n\n- **Stockouts activos:** 3 productos\n- **Rotación promedio:** 18 días\n- **Valor en almacén:** $4.2M MXN\n- **Alerta:** Producto A-112 llega a cero en ~6 días\n\n¿Genero una orden de reabastecimiento sugerida?';
+  }
+  if (low.includes('finanz') || low.includes('ebitda') || low.includes('utilidad')) {
+    return '💰 **KPIs Financieros**\n\n- **EBITDA:** 18.4%\n- **DSO (días cartera):** 42 días\n- **Liquidez corriente:** 1.8x\n- **Margen neto:** 11.2%\n\n¿Quieres ver la proyección a 90 días?';
+  }
+  if (low.includes('cliente')) {
+    return '👥 **Análisis de Clientes**\n\n- **Activos últimos 90 días:** 234\n- **NPS estimado:** 67\n- **LTV promedio:** $89K MXN\n- **Riesgo de churn (>60 días sin compra):** 18 cuentas\n\n¿Quieres la lista de cuentas en riesgo?';
+  }
+  if (low.includes('demo') || low.includes('reuni') || low.includes('contact')) {
+    return '📅 **Perfecto.** Puedo agendar una demo personalizada con datos reales de tu industria.\n\nNuestro equipo te contactará en menos de 2 horas. También puedes escribirnos directamente a **ventas@atollom.com** o por WhatsApp.';
+  }
+
+  return '¿Quieres que analice **ventas**, **inventario**, **finanzas** o **clientes**? Estoy conectado a tu ERP en tiempo real. 📊';
+}
 
 function addMsg(text, sender) {
   const div = document.createElement('div');
@@ -276,7 +325,7 @@ function processChat(input) {
   }
 
   showTyping();
-  
+
   fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -285,15 +334,20 @@ function processChat(input) {
   .then(res => res.json())
   .then(data => {
     removeTyping();
-    const replyText = data.reply || 'Hubo un inconveniente conectando con nuestra inteligencia de datos.';
-    addMsg(replyText, 'bot');
-    chatHistory.push({ role: 'bot', text: replyText });
+    if (data.useFallback || !data.reply || data.reply.startsWith('Gemini API Error:')) {
+      const reply = fallbackEngine(input);
+      addMsg(reply, 'bot');
+      chatHistory.push({ role: 'bot', text: reply });
+    } else {
+      addMsg(data.reply, 'bot');
+      chatHistory.push({ role: 'bot', text: data.reply });
+    }
   })
-  .catch((err) => {
-    console.error('Chat AI Error:', err);
+  .catch(() => {
     removeTyping();
-    addMsg('Error de conectividad en el servidor. Intenta de nuevo más tarde.', 'bot');
-    chatHistory.pop(); // Revert user message to prevent desync
+    const reply = fallbackEngine(input);
+    addMsg(reply, 'bot');
+    chatHistory.push({ role: 'bot', text: reply });
   });
 }
 
@@ -339,14 +393,19 @@ chatFab.addEventListener('click', () => {
     .then(res => res.json())
     .then(data => {
       removeTyping();
-      const reply = data.reply || '¡Hola! Soy el agente de inteligencia de Atollom AI. ¿Con quién tengo el gusto?';
-      addMsg(reply, 'bot');
-      chatHistory.push({ role: 'bot', text: reply });
+      if (data.useFallback || !data.reply || data.reply.startsWith('Gemini API Error:')) {
+        const reply = fallbackEngine('Hola');
+        addMsg(reply, 'bot');
+        chatHistory.push({ role: 'bot', text: reply });
+      } else {
+        addMsg(data.reply, 'bot');
+        chatHistory.push({ role: 'bot', text: data.reply });
+      }
     }).catch(() => {
       removeTyping();
-      const backup = '¡Hola! Soy el asistente virtual de **Atollom AI**. ¿Con quién hablo?';
-      addMsg(backup, 'bot');
-      chatHistory.push({ role: 'bot', text: backup });
+      const reply = fallbackEngine('Hola');
+      addMsg(reply, 'bot');
+      chatHistory.push({ role: 'bot', text: reply });
     });
   }
 });

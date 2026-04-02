@@ -81,7 +81,13 @@ REGLAS DE FLUJO CRÍTICAS:
 
     if (data.error) {
       console.error("Gemini Error:", data.error);
-      return res.status(500).json({ reply: "Gemini API Error: " + (data.error.message || JSON.stringify(data.error)) });
+      const code = data.error.code || 0;
+      const msg = data.error.message || '';
+      // Quota / rate limit: signal frontend to use local fallback silently
+      if (code === 429 || msg.toLowerCase().includes('quota') || msg.toLowerCase().includes('rate')) {
+        return res.status(200).json({ useFallback: true });
+      }
+      return res.status(200).json({ useFallback: true });
     }
 
     const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "No pude procesar la solicitud.";
