@@ -31,11 +31,11 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Spacing */
-  --section-padding: 80px 0;
+  --section-padding: 40px 0;
   --container-width: 1200px;
   --gap-xs: 8px;
   --gap-sm: 16px;
-  --gap-md: 24px;
+  --gap-md: 20px;
   --gap-lg: 40px;
   --gap-xl: 64px;
   --gap-2xl: 96px;
@@ -366,8 +366,9 @@ section {
 }
 
 .nav-logo-img {
-  height: 56px;
-  mix-blend-mode: screen;
+  height: 64px;
+  width: auto;
+  object-fit: contain;
 }
 
 .nav-logo svg {
@@ -490,7 +491,7 @@ section {
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding: 100px 0 40px;
+  padding: 80px 0 30px;
 }
 
 .hero-bg-gradient {
@@ -549,9 +550,8 @@ section {
   font-weight: 400;
   color: var(--text-secondary);
   line-height: 1.8;
-  max-width: 620px;
-  margin-top: 24px;
-  margin-bottom: var(--gap-sm);
+  margin-top: 16px;
+  margin-bottom: 16px;
   animation: fadeInUp 0.8s var(--ease-out) 0.2s both;
 }
 
@@ -559,13 +559,13 @@ section {
   display: flex;
   align-items: center;
   gap: var(--gap-sm);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   animation: fadeInUp 0.8s var(--ease-out) 0.3s both;
 }
 
 .hero-stats-wrapper {
-  margin-top: 24px;
-  padding-top: var(--gap-lg);
+  margin-top: 16px;
+  padding-top: var(--gap-md);
   border-top: 1px solid var(--white-10);
   animation: fadeInUp 0.8s var(--ease-out) 0.4s both;
 }
@@ -1315,10 +1315,9 @@ section {
   gap: var(--gap-sm);
 }
 .footer-logo-img {
-  height: 52px;
+  height: 60px;
   width: auto;
   object-fit: contain;
-  mix-blend-mode: screen;
 }
 .footer-logo svg {
   width: 32px;
@@ -1943,14 +1942,6 @@ section {
   .hero-ctas {
     justify-content: center;
     flex-direction: column;
-  }
-
-  .hero-ctas .btn {
-    width: 100%;
-  }
-
-  .hero-stats {
-    grid-template-columns: repeat(3, 1fr);
   }
 
   .hero-media {

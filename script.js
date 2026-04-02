@@ -32,7 +32,7 @@ const T = {
 es: {
 'nav.home':'Inicio','nav.solutions':'Soluciones','nav.demo':'Demo','nav.arch':'Arquitectura','nav.contact':'Contacto','nav.cta':'Agenda una Demo',
 'hero.badge':'Plataforma de IA Empresarial','hero.h1a':'Inteligencia Artificial que ','hero.h1b':'Transforma tu Operación',
-'hero.h2':'Conectamos IA con tus sistemas de gestión para automatizar análisis, optimizar decisiones y multiplicar resultados financieros.',
+'hero.h2':'Automatiza análisis y multiplica tus resultados financieros conectando IA con tus sistemas de gestión.',
 'hero.cta1':'Agenda una Demo','hero.cta2':'Conoce Más','hero.stat1':'Tenants Activos','hero.stat2':'Uptime','hero.stat3':'API Requests / día',
 'showcase.label':'Potencia Ejecutiva','showcase.title':'Todo el Poder en una Pantalla','showcase.subtitle':'Dashboards inteligentes que transforman datos complejos en decisiones claras e inmediatas.',
 'showcase.f1.title':'Análisis Multi-Tenant','showcase.f1.desc':'Gestiona múltiples empresas desde un solo panel con segregación segura de datos.',
@@ -77,7 +77,7 @@ es: {
 en: {
 'nav.home':'Home','nav.solutions':'Solutions','nav.demo':'Demo','nav.arch':'Architecture','nav.contact':'Contact','nav.cta':'Book a Demo',
 'hero.badge':'Enterprise AI Platform','hero.h1a':'Artificial Intelligence that ','hero.h1b':'Transforms Your Operations',
-'hero.h2':'We connect AI with your management systems to automate analysis, optimize decisions and multiply financial results.',
+'hero.h2':'Automate analysis and multiply financial results by connecting AI with your management systems.',
 'hero.cta1':'Book a Demo','hero.cta2':'Learn More','hero.stat1':'Active Tenants','hero.stat2':'Uptime','hero.stat3':'API Requests / day',
 'showcase.label':'Executive Power','showcase.title':'All the Power in One Screen','showcase.subtitle':'Smart dashboards that transform complex data into clear, immediate decisions.',
 'showcase.f1.title':'Multi-Tenant Analysis','showcase.f1.desc':'Manage multiple companies from a single panel with secure data segregation.',
