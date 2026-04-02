@@ -235,9 +235,9 @@ const chatSend = document.getElementById('chatSend');
 let chatHistory = [];
 let leadEnviado = false;
 
-// === FALLBACK ENGINE (funciona sin API) ===
+// === FALLBACK ENGINE (funciona sin API o en errores) ===
 let fbStep = 0;
-let fbData = { name: '', company: '' };
+let fbData = { name: '', need: '', company: '', email: '', phone: '', hours: '', method: '' };
 
 function fallbackEngine(input) {
   const t = (input || '').trim();
@@ -245,45 +245,43 @@ function fallbackEngine(input) {
 
   if (fbStep === 0) {
     fbStep = 1;
-    return '¡Hola! Soy la **Inteligencia Colectiva de Atollom AI**.\n\n¿Con quién tengo el gusto?';
+    return '¡Hola! Soy tu **Consultor Atollom AI**. 👋\n\n¿Con quién tengo el gusto y qué solución de IA buscas para tu empresa? (Ej. WhatsApp AI, Agente ERP, o algo a medida).';
   }
+  
   if (fbStep === 1) {
     fbData.name = t;
     fbStep = 2;
-    return `Mucho gusto, **${t}**. 👋\n\n¿A qué empresa perteneces?`;
+    return `Es un placer, **${t}**. Entiendo perfectamente. Para darte una propuesta ajustada, ¿en qué **empresa** trabajas actualmente?`;
   }
+
   if (fbStep === 2) {
     fbData.company = t;
     fbStep = 3;
-    return `Excelente. Para mostrarte análisis reales conectados a **${t}**, ¿podrías compartirme tu correo corporativo?`;
+    return `Excelente. Para enviarte detalles técnicos y casos de éxito de **${t}**, ¿podrías compartirme tu **correo corporativo** y un **teléfono** de contacto?`;
   }
+
   if (fbStep === 3) {
-    if (!t.includes('@')) {
-      return 'Necesito un correo corporativo válido (con @) para activar la integración con tu ERP. ¿Cuál sería?';
-    }
+    // Almacenamos lo que venga como contacto, intentando separar email
+    fbData.email = t.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)?.[0] || 'Pendiente';
+    fbData.phone = t.replace(/[^\d+ ]/g, '') || 'Pendiente';
     fbStep = 4;
-    const co = fbData.company || 'tu empresa';
-    return `✅ **Conectando con Bind ERP — ${co}...**\n\n📊 **Resumen Ejecutivo**\n\n- **Ventas del mes:** $2.4M MXN ↑ 12%\n- **Margen bruto:** 34.2%\n- **SKUs en stock crítico:** 8\n- **CxC vencida +30 días:** $180K MXN\n\nGenerando dashboard interactivo... ¿Qué área quieres profundizar: **ventas**, **inventario** o **finanzas**?`;
+    return `¡Recibido! 🚀 Por último, ¿en qué **horario** te vendría bien que te contactemos y por qué **medio** prefieres que lo hagamos (WhatsApp, Llamada o Correo)?`;
   }
 
-  // Post-calificación: respuestas por tema
-  if (low.includes('venta')) {
-    return '📈 **Análisis de Ventas**\n\n- **Top producto:** SKU-4521 — $340K MXN\n- **Canal digital:** +28% vs mes anterior\n- **Ticket promedio:** $12,400 MXN\n- **Mejor día:** Jueves (23% del volumen semanal)\n\n¿Quieres desglose por región o por cliente?';
-  }
-  if (low.includes('inventario') || low.includes('stock')) {
-    return '📦 **Estado de Inventario**\n\n- **Stockouts activos:** 3 productos\n- **Rotación promedio:** 18 días\n- **Valor en almacén:** $4.2M MXN\n- **Alerta:** Producto A-112 llega a cero en ~6 días\n\n¿Genero una orden de reabastecimiento sugerida?';
-  }
-  if (low.includes('finanz') || low.includes('ebitda') || low.includes('utilidad')) {
-    return '💰 **KPIs Financieros**\n\n- **EBITDA:** 18.4%\n- **DSO (días cartera):** 42 días\n- **Liquidez corriente:** 1.8x\n- **Margen neto:** 11.2%\n\n¿Quieres ver la proyección a 90 días?';
-  }
-  if (low.includes('cliente')) {
-    return '👥 **Análisis de Clientes**\n\n- **Activos últimos 90 días:** 234\n- **NPS estimado:** 67\n- **LTV promedio:** $89K MXN\n- **Riesgo de churn (>60 días sin compra):** 18 cuentas\n\n¿Quieres la lista de cuentas en riesgo?';
-  }
-  if (low.includes('demo') || low.includes('reuni') || low.includes('contact')) {
-    return '📅 **Perfecto.** Puedo agendar una demo personalizada con datos reales de tu industria.\n\nNuestro equipo te contactará en menos de 2 horas. También puedes escribirnos directamente a **ventas@atollom.com** o por WhatsApp.';
+  if (fbStep === 4) {
+    fbData.hours = t;
+    fbStep = 5;
+    return `✅ **¡Todo listo!** Un consultor especialista se pondrá en contacto contigo muy pronto.\n\nMientras tanto, ¿quieres que te explique cómo funciona nuestra **Integración de WhatsApp** o el **Mapeo de ERP** para tu industria?`;
   }
 
-  return '¿Quieres que analice **ventas**, **inventario**, **finanzas** o **clientes**? Estoy conectado a tu ERP en tiempo real. 📊';
+  if (low.includes('whatsapp')) {
+    return '📱 **WhatsApp AI Atollom**\n\n- **Atención 24/7:** Resolvemos dudas y cerramos ventas mientras duermes.\n- **Memoria de Cliente:** La IA recuerda compras previas y preferencias.\n- **Cierre de Citas:** Se integra con tu calendario para agendar visitas.\n\n¿Quieres que agendemos una demo para ver esto en vivo?';
+  }
+  if (low.includes('erp') || low.includes('bind') || low.includes('mapeo')) {
+    return '📊 **Mapeo de ERP (Bind & Otros)**\n\n- **Insights en segundos:** Deja de bajar archivos Excel cada mañana.\n- **Agente Analista:** Pregúntale "¿Cuánto margen tuve hoy?" y obtén la respuesta al instante.\n- **Dashboard en Mano:** Visualiza KPIs financieros y de stock desde tu móvil.\n\nEs la herramienta definitiva para directores generales.';
+  }
+
+  return '¿Te gustaría profundizar en **Integración de WhatsApp**, **Agente ERP** o agendar una **Reunión Estratégica**?';
 }
 
 function addMsg(text, sender) {
