@@ -1,68 +1,51 @@
 -- ============================================================
 --  ATOLLOM AI — Supabase Row Level Security (Zero Trust)
 --  Ejecutar en: Supabase Dashboard > SQL Editor
---  Principio: nadie lee los leads excepto admins autenticados.
---              solo el servidor puede insertar (via anon key).
+--  Tabla: public.lead (singular, ya existente)
 -- ============================================================
 
--- ---- 1. Crear tabla leads (si no existe) ----
-CREATE TABLE IF NOT EXISTS public.leads (
-  id          UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  email       TEXT NOT NULL,
-  history     JSONB,
-  source      TEXT DEFAULT 'Atollom Web',
-  created_at  TIMESTAMPTZ DEFAULT NOW()
-);
+-- ---- 1. Activar RLS en la tabla existente ----
+ALTER TABLE public.lead ENABLE ROW LEVEL SECURITY;
 
--- ---- 2. Activar RLS en la tabla ----
-ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
-
--- ---- 3. Política: INSERT permitido para anon (tu servidor usa anon key) ----
---  Solo se puede insertar. No se puede leer, actualizar ni borrar.
-CREATE POLICY "leads_insert_anon"
-  ON public.leads
+-- ---- 2. INSERT permitido para anon (el servidor inserta con anon key) ----
+CREATE POLICY "lead_insert_anon"
+  ON public.lead
   FOR INSERT
   TO anon
-  WITH CHECK (
-    email IS NOT NULL
-    AND email ~* '^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$'
-  );
+  WITH CHECK (true);
 
--- ---- 4. Política: SELECT solo para usuarios autenticados (admins) ----
-CREATE POLICY "leads_select_authenticated"
-  ON public.leads
+-- ---- 3. SELECT solo para admins autenticados ----
+CREATE POLICY "lead_select_authenticated"
+  ON public.lead
   FOR SELECT
   TO authenticated
   USING (true);
 
--- ---- 5. Política: UPDATE solo para admins autenticados ----
-CREATE POLICY "leads_update_authenticated"
-  ON public.leads
+-- ---- 4. UPDATE solo para admins autenticados ----
+CREATE POLICY "lead_update_authenticated"
+  ON public.lead
   FOR UPDATE
   TO authenticated
   USING (true);
 
--- ---- 6. Política: DELETE solo para admins autenticados ----
-CREATE POLICY "leads_delete_authenticated"
-  ON public.leads
+-- ---- 5. DELETE solo para admins autenticados ----
+CREATE POLICY "lead_delete_authenticated"
+  ON public.lead
   FOR DELETE
   TO authenticated
   USING (true);
 
--- ---- 7. Revocar acceso público directo ----
---  Esto asegura que nadie pueda acceder a la tabla sin pasar por RLS.
-REVOKE ALL ON public.leads FROM PUBLIC;
-GRANT INSERT ON public.leads TO anon;
-GRANT ALL ON public.leads TO authenticated;
+-- ---- 6. Permisos de rol ----
+GRANT INSERT ON public.lead TO anon;
+GRANT ALL ON public.lead TO authenticated;
 
--- ---- 8. Índice para búsquedas por email ----
-CREATE INDEX IF NOT EXISTS idx_leads_email ON public.leads (email);
-CREATE INDEX IF NOT EXISTS idx_leads_created_at ON public.leads (created_at DESC);
+-- ---- 7. Índices (si no existen) ----
+CREATE INDEX IF NOT EXISTS idx_lead_email ON public.lead (email);
+CREATE INDEX IF NOT EXISTS idx_lead_created_at ON public.lead (created_at DESC);
 
 -- ============================================================
---  VERIFICACIÓN — Ejecuta esto después para confirmar que RLS
---  está activo y las políticas existen:
+--  VERIFICACIÓN
 -- ============================================================
--- SELECT tablename, rowsecurity FROM pg_tables WHERE tablename = 'leads';
--- SELECT policyname, cmd, roles FROM pg_policies WHERE tablename = 'leads';
+-- SELECT tablename, rowsecurity FROM pg_tables WHERE tablename = 'lead';
+-- SELECT policyname, cmd, roles FROM pg_policies WHERE tablename = 'lead';
 -- ============================================================
