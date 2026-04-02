@@ -31,7 +31,7 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Spacing */
-  --section-padding: 120px 0;
+  --section-padding: 80px 0;
   --container-width: 1200px;
   --gap-xs: 8px;
   --gap-sm: 16px;
@@ -508,7 +508,7 @@ section {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: var(--gap-2xl);
-  align-items: center;
+  align-items: flex-start;
   position: relative;
   z-index: 1;
 }
@@ -552,7 +552,8 @@ section {
   font-weight: 400;
   color: var(--text-secondary);
   line-height: 1.8;
-  max-width: 580px;
+  max-width: 620px;
+  margin-top: 40px;
   margin-bottom: var(--gap-xl);
   animation: fadeInUp 0.8s var(--ease-out) 0.2s both;
 }
@@ -565,13 +566,17 @@ section {
   animation: fadeInUp 0.8s var(--ease-out) 0.3s both;
 }
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gap-sm);
+.hero-stats-wrapper {
+  margin-top: var(--gap-xl);
+  padding-top: var(--gap-lg);
+  border-top: 1px solid var(--white-10);
   animation: fadeInUp 0.8s var(--ease-out) 0.4s both;
 }
-
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap-2xl);
+}
 .hero-stat {
   text-align: center;
   padding: var(--gap-sm) var(--gap-xs);
@@ -606,7 +611,8 @@ section {
   overflow: hidden;
   box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4), 0 0 40px rgba(204, 255, 0, 0.08);
   border: 1px solid var(--glass-border);
-  max-width: 520px;
+  max-width: 600px;
+  margin-top: 60px;
   width: 100%;
 }
 
@@ -676,7 +682,7 @@ section {
 }
 
 .showcase-mobile-image {
-  max-width: 400px;
+  max-width: 900px;
   margin: 0 auto;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
@@ -1157,7 +1163,9 @@ section {
 
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+  max-width: 900px;
+  margin: 0 auto;
   gap: var(--gap-xl);
   position: relative;
   z-index: 1;
@@ -1226,6 +1234,13 @@ section {
   background: linear-gradient(135deg, var(--navy-medium), var(--navy-card));
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-md);
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .contact-info-card { grid-template-columns: 1fr; }
 }
 
 .contact-info-card h3 {
@@ -1300,7 +1315,11 @@ section {
   align-items: center;
   gap: var(--gap-sm);
 }
-
+.footer-logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
 .footer-logo svg {
   width: 32px;
   height: 32px;
