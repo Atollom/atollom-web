@@ -67,7 +67,7 @@ REGLAS CRÍTICAS:
 `;
 
   try {
-    const safeHistory = history.slice(-40); // máximo últimos 40 mensajes
+    const safeHistory = history.slice(-10); // últimos 10 mensajes (post-calificación)
     const formattedContents = safeHistory.map(msg => ({
       role: msg.role === 'bot' ? 'model' : 'user',
       parts: [{ text: String(msg.text || '').slice(0, 2000) }]
@@ -80,7 +80,7 @@ REGLAS CRÍTICAS:
       body: JSON.stringify({
         contents: formattedContents,
         systemInstruction: { parts: [{ text: systemInstruction }] },
-        generationConfig: { temperature: 0.2 }
+        generationConfig: { temperature: 0.2, maxOutputTokens: 200 }
       })
     });
 

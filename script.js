@@ -320,7 +320,17 @@ function processChat(input) {
     leadEnviado = true;
   }
 
-  showTyping();
+  // Zero-cost mode: fallback local hasta que haya email (lead calificado)
+  // Gemini solo se activa para usuarios que ya completaron la calificación
+  if (!leadEnviado) {
+    setTimeout(() => {
+      removeTyping();
+      const reply = fallbackEngine(input);
+      addMsg(reply, 'bot');
+      chatHistory.push({ role: 'bot', text: reply });
+    }, 600);
+    return;
+  }
 
   fetch('/api/chat', {
     method: 'POST',
@@ -372,32 +382,15 @@ chatFab.addEventListener('click', () => {
   chatWindow.classList.add('open');
   if (chatHistory.length === 0) {
     showTyping();
-    
     const initMsg = { role: 'user', text: 'Hola' };
     chatHistory.push(initMsg);
-    
-    fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ history: chatHistory })
-    })
-    .then(res => res.json())
-    .then(data => {
-      removeTyping();
-      if (data.useFallback || !data.reply || data.reply.startsWith('Gemini API Error:')) {
-        const reply = fallbackEngine('Hola');
-        addMsg(reply, 'bot');
-        chatHistory.push({ role: 'bot', text: reply });
-      } else {
-        addMsg(data.reply, 'bot');
-        chatHistory.push({ role: 'bot', text: data.reply });
-      }
-    }).catch(() => {
+    // Saludo inicial siempre con fallback — cero tokens
+    setTimeout(() => {
       removeTyping();
       const reply = fallbackEngine('Hola');
       addMsg(reply, 'bot');
       chatHistory.push({ role: 'bot', text: reply });
-    });
+    }, 700);
   }
 });
 
