@@ -313,12 +313,11 @@ function processChat(input) {
 
   chatHistory.push({ role: 'user', text: input });
 
-  // Intelligent Interceptor: Busca datos de contacto de forma proactiva
+  // Interceptor: captura email en cuanto aparece en el mensaje
   const emailMatch = input.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
-  const phoneMatch = input.match(/(\+?\d{10,15})/g);
-  
-  if (emailMatch || phoneMatch || chatHistory.length % 5 === 0) {
-      sendLead(emailMatch ? emailMatch[0] : null);
+  if (!leadEnviado && emailMatch && emailMatch[0]) {
+    sendLead(emailMatch[0]);
+    leadEnviado = true;
   }
 
   showTyping();
