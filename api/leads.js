@@ -31,11 +31,27 @@ export default async function handler(req, res) {
     // 1. Notificación Inmediata por Email (FormSubmit)
     // Usamos FormSubmit como bridge para que el usuario reciba el correo al instante.
     if (email && EMAIL_REGEX.test(email.trim())) {
+      // Extraer datos clave de la conversación
+      const userMsgs = safeHistory.filter(m => m.role === 'user').map(m => m.text);
+      const botMsgs  = safeHistory.filter(m => m.role === 'bot' || m.role === 'model').map(m => m.text);
+
+      // El flujo es: Hola → nombre+necesidad → empresa → email/tel → horario
+      const nombre    = userMsgs[1] || 'No indicado';
+      const empresa   = userMsgs[2] || 'No indicada';
+      const contacto  = userMsgs[3] || email;
+      const horario   = userMsgs[4] || 'No indicado';
+      const necesidad = botMsgs[1]  || 'Ver conversación';
+
       const emailBody = {
-        _subject: `🚀 NUEVO LEAD: ${email}`,
-        email: email,
-        source: safeSource,
-        conversation: safeHistory.map(m => `[${m.role}] ${m.text}`).join('\n\n'),
+        _subject: `🚀 NUEVO LEAD — ${empresa} | ${email}`,
+        'Email':         email,
+        'Nombre':        nombre,
+        'Empresa':       empresa,
+        'Contacto':      contacto,
+        'Horario':       horario,
+        'Necesidad':     necesidad,
+        'Fuente':        safeSource,
+        'Fecha':         new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' }),
         _template: 'table',
         _captcha: 'false'
       };

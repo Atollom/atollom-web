@@ -448,6 +448,38 @@ window.addEventListener('scroll', () => {
   });
 });
 
+// === CONTACT FORM — AJAX + MENSAJE DE ÉXITO ===
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = contactForm.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const data = new FormData(contactForm);
+    fetch('https://formsubmit.co/ajax/ventas@atollom.com', {
+      method: 'POST',
+      body: data
+    })
+    .then(res => res.json())
+    .then(() => {
+      contactForm.innerHTML = `
+        <div style="text-align:center;padding:48px 24px;">
+          <div style="font-size:3rem;margin-bottom:16px;">✅</div>
+          <h3 style="color:var(--lime-electric);font-size:1.4rem;margin-bottom:12px;">¡Mensaje Recibido!</h3>
+          <p style="color:var(--text-secondary);line-height:1.7;">Gracias por contactarnos. Un consultor de <strong style="color:var(--text-primary);">Atollom AI</strong> revisará tu solicitud y se pondrá en contacto contigo en <strong style="color:var(--text-primary);">menos de 2 horas</strong> en horario laboral.</p>
+          <p style="margin-top:16px;color:var(--text-secondary);font-size:0.9rem;">¿Necesitas respuesta urgente? Escríbenos por <a href="https://wa.me/525530520825" target="_blank" style="color:var(--lime-electric);">WhatsApp</a>.</p>
+        </div>`;
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = 'Enviar Mensaje';
+      alert('Hubo un problema al enviar. Intenta de nuevo o escríbenos directamente a ventas@atollom.com');
+    });
+  });
+}
+
 // === SMOOTH SCROLL FOR SAFARI ===
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', (e) => {
