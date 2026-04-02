@@ -65,7 +65,7 @@ export default async function handler(req, res) {
 
     // 2. Persistencia en Base de Datos (Supabase)
     if (sbUrl && sbKey) {
-      await fetch(`${sbUrl}/rest/v1/lead`, {
+      await fetch(`${sbUrl}/rest/v1/leads`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
